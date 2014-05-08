@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ord.autumnridge.disciplekids</groupId>
+    <artifactId>dksched-ear</artifactId>
+    <version>1.00.00.00-SNAPSHOT</version>
+    <packaging>ear</packaging>
+    <name>proteomics</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>2.8</version>
+                <configuration>
+                    <displayName>proteomics</displayName>
+                    <modules>
+                        <webModule>
+                            <groupId>ord.autumnridge.disciplekids</groupId>
+                            <artifactId>dksched-war</artifactId>
+                            <bundleFileName>dksched.war</bundleFileName>
+                            <contextRoot>/dksched</contextRoot>
+                        </webModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>ord.autumnridge.disciplekids</groupId>
+            <artifactId>dksched-war</artifactId>
+            <version>1.00.00.00s-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+</project>

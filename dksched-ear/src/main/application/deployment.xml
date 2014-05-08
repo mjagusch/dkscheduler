@@ -1,0 +1,9 @@
+<appdeployment:Deployment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI"
+                          xmlns:appdeployment="http://www.ibm.com/websphere/appserver/schemas/5.0/appdeployment.xmi"
+                          xmi:id="Deployment_1">
+
+    <deployedObject xmi:type="appdeployment:ApplicationDeployment" xmi:id="ApplicationDeployment_1"
+                    startingWeight="1" warClassLoaderPolicy="SINGLE">
+        <classloader xmi:id="Classloader_1" mode="PARENT_LAST"/>
+    </deployedObject>
+</appdeployment:Deployment>

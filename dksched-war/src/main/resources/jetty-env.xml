@@ -1,0 +1,35 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+ 
+ <Configure class="org.eclipse.jetty.webapp.WebAppContext">
+
+	<!-- there are a couple built in things that require a mail server be configured -->
+	<New id="mail" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg>mail/Session</Arg>
+		<Arg>
+			<New class="org.eclipse.jetty.jndi.factories.MailSessionReference">
+				<Set name="user"></Set>
+				<Set name="password"></Set>
+				<Set name="properties">
+					<New class="java.util.Properties">
+						<Put name="mail.smtp.host">smtp.gmail.com</Put>
+					</New>
+				</Set>
+			</New>
+		</Arg>
+	</New>
+
+	<!-- You will likely have a database to configure while running within jetty -->
+	<New id="dsDatasource" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg>jdbc/dsDkSched</Arg>
+		<Arg>
+			<New class="org.apache.commons.dbcp.BasicDataSource">
+				<Set name="driverClassName">net.sourceforge.jtds.jdbc.Driver</Set>
+				<Set name='url'>jdbc:jtds:sqlserver://SERVER:PORT/DATABASE;instance=INSTANCE</Set>
+				<Set name="username"><Env name="LANID"/></Set>
+				<Set name="password"><Env name="LANPW"/></Set>
+			</New>
+		</Arg>
+	</New>
+
+</Configure>

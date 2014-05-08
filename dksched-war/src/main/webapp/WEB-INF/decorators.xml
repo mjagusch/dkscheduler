@@ -1,0 +1,18 @@
+<decorators defaultdir="/decorators">
+    <decorator name='main' page='main.jsp'>
+        <pattern>/*</pattern>
+    </decorator>
+    <excludes>
+        <pattern>**/api/**</pattern>
+        <pattern>**/*.json</pattern>
+        <pattern>**/*.xml</pattern>
+        <pattern>**/*.html</pattern>
+        <pattern>**/*.xls</pattern>
+        <pattern>**/*.csv</pattern>
+        <pattern>**/*.txt</pattern>
+        <pattern>**/*.bed</pattern>
+        <pattern>**/*.gff</pattern>
+        <pattern>**/*.vcf</pattern>
+        <pattern>**/cgi-bin/**</pattern>
+    </excludes>
+</decorators>

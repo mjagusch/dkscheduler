@@ -1,0 +1,67 @@
+
+div.field label{
+	text-align: right;
+}
+
+.error{
+	color:#FA787E;
+}
+
+span.error{
+  margin-left:1em;
+}
+
+.form .ng-invalid.ng-dirty {
+  background-color:#FA787E;
+}
+
+.footer {
+    background-color: rgb(3, 60, 115);
+    background-image: linear-gradient(rgb(4, 81, 155), rgb(4, 70, 135) 60%, rgb(3, 55, 105));
+    color: #ffffff;
+}
+
+html,
+body {
+    height: 100%;
+    /* The html and body elements cannot have any padding or margin. */
+}
+/* Wrapper for page content to push down footer */
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* Negative indent footer by it's height */
+    margin: 0 auto -3em;
+}
+
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+    height: 3em;
+}
+#footer {
+    background-color: #eee;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+    #footer {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (min-width: 1200px) {
+  .container-fluid {
+    margin-left: 50px
+  }
+}
+
+/* the default button has a white color which blends into the background too well */
+.btn:hover{
+    color:black;
+    background-color: #999999;
+}
