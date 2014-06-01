@@ -2,9 +2,9 @@ package org.autumnridge.disciplekids.dksched.controller;
 
 import java.util.List;
 
-import org.autumnridge.disciplekids.dksched.schedule.ScheduledDate;
 import org.autumnridge.disciplekids.dksched.schedule.Recurrance;
-import org.autumnridge.disciplekids.dksched.schedule.RoomInstance;
+import org.autumnridge.disciplekids.dksched.schedule.ScheduledDate;
+import org.autumnridge.disciplekids.dksched.schedule.ScheduledRoom;
 import org.autumnridge.disciplekids.dksched.schedule.data.ScheduleDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -73,22 +73,24 @@ public class ScheduleController {
   }	
 
   @PreAuthorize("hasRole('ROLE_ACTIVE')")
-  @RequestMapping(value="/room-instances", method = RequestMethod.GET)
-  public ResponseEntity<List<RoomInstance>> queryRoomInstances(){
-    List<RoomInstance> roomInstances = scheduleDao.listRoomInstances();
-    return new ResponseEntity<List<RoomInstance>>(roomInstances, HttpStatus.OK);
+  @RequestMapping(value="/scheduled-rooms", method = RequestMethod.GET)
+  public ResponseEntity<List<ScheduledRoom>> queryScheduledRooms(@RequestParam long id){
+	System.out.println("SCHEDULED ROOMS");
+	// TODO: lookup by date...
+    List<ScheduledRoom> scheduledRooms = scheduleDao.listScheduledRooms(null);
+    return new ResponseEntity<List<ScheduledRoom>>(scheduledRooms, HttpStatus.OK);
   }	
   
   @PreAuthorize("hasRole('ROLE_ACTIVE')")
-  @RequestMapping(value="/room-instances/{roomInstanceId}", method = RequestMethod.GET)
-  public ResponseEntity<RoomInstance> getRoomInstance(@PathVariable long roomInstanceId){
-    RoomInstance roomInstance = null;
-    if ( roomInstanceId > 0 ) {
-    	roomInstance = scheduleDao.idRoomInstance(roomInstanceId);
+  @RequestMapping(value="/scheduled-rooms/{scheduledRoomId}", method = RequestMethod.GET)
+  public ResponseEntity<ScheduledRoom> getScheduledRooms(@PathVariable long scheduledRoomId){
+    ScheduledRoom scheduledRoom = null;
+    if ( scheduledRoomId > 0 ) {
+    	scheduledRoom = scheduleDao.idScheduledRoom(scheduledRoomId);
     } else {
-    	roomInstance = new RoomInstance();
+    	scheduledRoom = new ScheduledRoom();
     }
-    return new ResponseEntity<RoomInstance>(roomInstance, HttpStatus.OK);
+    return new ResponseEntity<ScheduledRoom>(scheduledRoom, HttpStatus.OK);
   }
   
   @PreAuthorize("hasRole('ROLE_ACTIVE')")

@@ -126,7 +126,6 @@ mainApp.controller("RecurringScheduleCtrl", function($scope, $log, $http, $windo
 	    if ( $window.confirm('Are you sure you want to delete this recurrance?') ) {
 	    	Recurrances.remove({id:recurrance.id},
 	    	function() {
-	    		console.log('VOID');
 	    		$scope.voidRecurrance();
 	    		$scope.recurrances.splice($scope.recurrances.indexOf(recurrance), 1);
 	    		Notification.send({type:'success', title:'Recurrance deleted'});
@@ -139,15 +138,17 @@ mainApp.controller("RecurringScheduleCtrl", function($scope, $log, $http, $windo
 	
 	$scope.scheduleRecurring = function() {
 		// TODO:
+		console.log("TODO: $scope.scheduleRecurring");
 	};
 });
 
-mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, ScheduledDates, Notification){
+mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, ScheduledDates, ScheduledRooms, Notification){
 
 	$scope.scheduledDates = ScheduledDates.query();
 
 	$scope.displayScheduledDate = function(scheduledDate) {
 		$scope.scheduledDate = scheduledDate;
+		$scope.scheduledRooms = ScheduledRooms.query();
 	};
 	
 	$scope.voidScheduledDate = function() {
@@ -166,7 +167,9 @@ mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, Sc
 		            Notification.send({type:'error', title:'Error updating scheduled date'});
 	            });
 	          } else {
-		        var saved = ScheduledDates.save(instance,
+	        	console.log('xxx');
+	        	console.log('SD:' + JSON.stringify(scheduledDate));
+		        var saved = ScheduledDates.save(scheduledDate,
 		        function() {
 		            Notification.send({type:'success', title:'Scheduled date saved'});
 	            },
@@ -190,7 +193,6 @@ mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, Sc
 	    if ( $window.confirm('Are you sure you want to delete this scheduled date?') ) {
 	    	ScheduledDates.remove({id:scheduledDate.id},
 	    	function() {
-	    		console.log('VOID');
 	    		$scope.voidScheduledDate();
 	    		$scope.scheduledDates.splice($scope.scheduledDates.indexOf(scheduledDate), 1);
 	    		Notification.send({type:'success', title:'Scheduled date deleted'});
@@ -200,18 +202,26 @@ mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, Sc
 	    	});
 	    }
 	};
+	
+	$scope.selectScheduledRoom = function(scheduledRoom) {
+		$scope.scheduledRoom = scheduledRoom;
+	};
+	
+	$scope.addScheduledRoom = function() {
+		// TODO: add popup to select room
+	};
 });
 
-mainApp.controller("RoomScheduleCtrl", function($scope, $log, $http, $window, Rooms, RoomInstances, Notification){
+mainApp.controller("RoomScheduleCtrl", function($scope, $log, $http, $window, Rooms, ScheduledRooms, Notification){
 	$scope.rooms = Rooms.query();
 
 	$scope.displayRoomSchedule = function(room) {
 		$scope.room = room;
-		$scope.roomInstances = [{scheduledDate:{dateScheduled:"2014-01-01", timeStart:"09:45:00", timeEnd:"11:15:00"}}];
+		$scope.scheduledRooms = [{scheduledDate:{dateScheduled:"2014-01-01", timeStart:"09:45:00", timeEnd:"11:15:00"}}];
 	};
 	
-	$scope.displayRoomInstance = function(roomInstance) {
-		$scope.roomInstance = roomInstance;
+	$scope.displayScheduledRoom = function(scheduledRoom) {
+		$scope.scheduledRoom = scheduledRoom;
 	};
 });
 

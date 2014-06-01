@@ -38,21 +38,21 @@ dkschedServices.factory('ScheduledDates', ['$resource', function($resource){
 	  'query': {method:'GET', isArray:true},
 	  'get': {method:'GET'},
 	  'save': {method:'POST'},
-	  'update': {method:'PUT'},
+	  'update': {method:'POST'},
 	  'remove': {method:'DELETE'}
   });
   return ScheduledDates;
 }]);
 
-dkschedServices.factory('RoomInstances', ['$resource', function($resource){
-	  var RoomInstances = $resource('/dksched/room-instances', null, {
+dkschedServices.factory('ScheduledRooms', ['$resource', function($resource){
+	  var ScheduledRooms = $resource('/dksched/scheduled-rooms', null, {
 		  'query': {method:'GET', isArray:true},
 		  'get': {method:'GET'},
 		  'save': {method:'POST'},
 		  'update': {method:'PUT'},
 		  'remove': {method:'DELETE'}
 	  });
-	  return RoomInstances;
+	  return ScheduledRooms;
 }]);
 
 dkschedServices.factory('Volunteers', ['$resource', function($resource){

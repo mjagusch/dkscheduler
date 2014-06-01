@@ -1,10 +1,11 @@
 package org.autumnridge.disciplekids.dksched.schedule.data;
 
+import java.sql.Date;
 import java.util.List;
 
-import org.autumnridge.disciplekids.dksched.schedule.ScheduledDate;
 import org.autumnridge.disciplekids.dksched.schedule.Recurrance;
-import org.autumnridge.disciplekids.dksched.schedule.RoomInstance;
+import org.autumnridge.disciplekids.dksched.schedule.ScheduledDate;
+import org.autumnridge.disciplekids.dksched.schedule.ScheduledRoom;
 import org.autumnridge.disciplekids.dksched.schedule.VolunteerInstance;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +19,19 @@ public class ScheduleHibernate implements ScheduleDao {
 	private SessionFactory sf;
 
 	@Override
-	public RoomInstance idRoomInstance(Long id) {
-		return (RoomInstance) (id == null ? null : sf.getCurrentSession().get(RoomInstance.class, id));
+	public ScheduledRoom idScheduledRoom(Long id) {
+		return (ScheduledRoom) (id == null ? null : sf.getCurrentSession().get(ScheduledRoom.class, id));
 	}
 
 	@Override
-	public void saveOrUpdateRoomInstance(RoomInstance roomInstance) {
-		sf.getCurrentSession().saveOrUpdate(roomInstance);
+	public void saveOrUpdateScheduledRoom(ScheduledRoom scheduledRoom) {
+		sf.getCurrentSession().saveOrUpdate(scheduledRoom);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<RoomInstance> listRoomInstances() {
-		return sf.getCurrentSession().createCriteria(RoomInstance.class)
+	public List<ScheduledRoom> listScheduledRooms(Date date) {
+		return sf.getCurrentSession().createCriteria(ScheduledRoom.class)
 				.list();
 	}
 
@@ -70,8 +71,8 @@ public class ScheduleHibernate implements ScheduleDao {
 	}
 
 	@Override
-	public void deleteRoomInstance(RoomInstance roomInstance) {
-		sf.getCurrentSession().delete(roomInstance);
+	public void deleteScheduledRoom(ScheduledRoom scheduledRoom) {
+		sf.getCurrentSession().delete(scheduledRoom);
 	}
 
 	@Override

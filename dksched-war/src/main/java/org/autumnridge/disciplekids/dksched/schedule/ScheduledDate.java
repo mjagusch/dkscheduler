@@ -51,12 +51,23 @@ public class ScheduledDate {
 		return id;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public Date getDateScheduled() {
 		return dateScheduled;
 	}
 
-	public ScheduledDate setDateScheduled(Date dateScheduled) {
-		this.dateScheduled = dateScheduled;
+//	public ScheduledDate setDateScheduled(Date dateScheduled) {
+//		System.out.println("SET: " + dateScheduled);
+//		this.dateScheduled = dateScheduled;
+//		return this;
+//	}
+
+	public ScheduledDate setDateScheduled(String dateScheduled) {
+		System.out.println("SETS: " + dateScheduled);
+		this.dateScheduled = Date.valueOf(dateScheduled);
 		return this;
 	}
 

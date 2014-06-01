@@ -15,10 +15,10 @@ public class VolunteerInstanceTest {
 	public void testVolunteerInstance() {
 		VolunteerInstance vi = new VolunteerInstance()
 		.setVolunteer(new Volunteer().setLastname("VOLUNTEER"))
-		.setRoomInstance(new RoomInstance().setRoom(new Room().setName("ROOM")));
+		.setScheduledRoom(new ScheduledRoom().setRoom(new Room().setName("ROOM")));
 	
 	assertNull(vi.getId());
-	assertEquals("ROOM", vi.getRoomInstance().getRoom().getName());
+	assertEquals("ROOM", vi.getScheduledRoom().getRoom().getName());
 	assertEquals("VOLUNTEER", vi.getVolunteer().getLastname());
 	assertTrue(vi.checkVersion(0));
 	assertFalse(vi.checkVersion(1));		

@@ -15,7 +15,7 @@ public class ScheduledDateTest {
 	@Test
 	public void testScheduledDate() {
 		ScheduledDate di = new ScheduledDate()
-			.setDateScheduled(new Date(298388482))
+			.setDateScheduled("2014-01-01")
 			.setTimeStart(Time.valueOf("10:10:10"))
 			.setTimeEnd(Time.valueOf("11:11:11"));
 		

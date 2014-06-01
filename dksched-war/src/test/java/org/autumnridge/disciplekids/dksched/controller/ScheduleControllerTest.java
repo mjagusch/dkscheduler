@@ -3,13 +3,12 @@ package org.autumnridge.disciplekids.dksched.controller;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
 import org.autumnridge.disciplekids.dksched.room.data.RoomDao;
-import org.autumnridge.disciplekids.dksched.schedule.ScheduledDate;
 import org.autumnridge.disciplekids.dksched.schedule.Recurrance;
+import org.autumnridge.disciplekids.dksched.schedule.ScheduledDate;
 import org.autumnridge.disciplekids.dksched.schedule.data.ScheduleDao;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,7 +66,7 @@ public class ScheduleControllerTest extends AbstractTransactionalJUnit4SpringCon
 	@Test
 	public void testUpdateScheduledDate() {
 		ScheduledDate r = scheduleDao.idScheduledDate(1L);
-		r.setDateScheduled(Date.valueOf("2014-01-01"))
+		r.setDateScheduled("2014-01-01")
 			.setTimeStart(Time.valueOf("10:10:10"))
 			.setTimeEnd(Time.valueOf("11:11:11"));
 		
@@ -88,7 +87,7 @@ public class ScheduleControllerTest extends AbstractTransactionalJUnit4SpringCon
 	@Test
 	public void testSaveScheduledDate() {
 		ScheduledDate r = new ScheduledDate()
-			.setDateScheduled(Date.valueOf("2013-12-31"))
+			.setDateScheduled("2013-12-31")
 			.setTimeStart(Time.valueOf("08:08:08"))
 			.setTimeEnd(Time.valueOf("09:09:09"));
 		

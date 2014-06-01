@@ -1,10 +1,11 @@
 package org.autumnridge.disciplekids.dksched.schedule.data;
 
+import java.sql.Date;
 import java.util.List;
 
-import org.autumnridge.disciplekids.dksched.schedule.ScheduledDate;
 import org.autumnridge.disciplekids.dksched.schedule.Recurrance;
-import org.autumnridge.disciplekids.dksched.schedule.RoomInstance;
+import org.autumnridge.disciplekids.dksched.schedule.ScheduledDate;
+import org.autumnridge.disciplekids.dksched.schedule.ScheduledRoom;
 import org.autumnridge.disciplekids.dksched.schedule.VolunteerInstance;
 
 public interface ScheduleDao {
@@ -12,18 +13,18 @@ public interface ScheduleDao {
 	/**
 	 * find a room instance with a given id
 	 */
-	RoomInstance idRoomInstance(Long id);
+	ScheduledRoom idScheduledRoom(Long id);
 
 	/**
 	 * save an idable or update it
 	 */
-	void saveOrUpdateRoomInstance(RoomInstance roomInstance);
+	void saveOrUpdateScheduledRoom(ScheduledRoom scheduledRoom);
 	
 	/**
 	 * List the available room instances
 	 * @return
 	 */
-	List<RoomInstance> listRoomInstances();
+	List<ScheduledRoom> listScheduledRooms(Date date);
 
 	/**
 	 * find a volunteer instance with a given id
@@ -41,7 +42,7 @@ public interface ScheduleDao {
 	 */
 	List<VolunteerInstance> listVolunteerInstances();
 
-	void deleteRoomInstance(RoomInstance roomInstance);
+	void deleteScheduledRoom(ScheduledRoom scheduledRoom);
 
 	void deleteVolunteerInstance(VolunteerInstance volunteerInstance);
 

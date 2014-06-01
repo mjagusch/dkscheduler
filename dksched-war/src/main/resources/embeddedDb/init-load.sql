@@ -23,7 +23,7 @@ values(0,'2014-04-19','17:15:00','18:45:00','mhj',CURRENT_TIMESTAMP),
 (0,'2014-04-20','09:45:00','11:15:00','mhj',CURRENT_TIMESTAMP),
 (0,'2014-04-20','11:15:00','12:45:00','mhj',CURRENT_TIMESTAMP);
 
-insert into dbo.RoomInstance(version,room_id,scheduledDate_id,changeusername,changetime)
+insert into dbo.ScheduledRoom(version,room_id,scheduledDate_id,changeusername,changetime)
 values(0,1,1,'mhj',CURRENT_TIMESTAMP),
 (0,1,2,'mhj',CURRENT_TIMESTAMP),
 (0,1,3,'mhj',CURRENT_TIMESTAMP),
@@ -37,7 +37,7 @@ values(0,1,1,'mhj',CURRENT_TIMESTAMP),
 (0,3,3,'mhj',CURRENT_TIMESTAMP),
 (0,3,4,'mhj',CURRENT_TIMESTAMP);
 
-insert into dbo.VolunteerInstance(version,roomInstance_id,volunteer_id,changeusername,changetime)
+insert into dbo.VolunteerInstance(version,scheduledRoom_id,volunteer_id,changeusername,changetime)
 values(0,1,1,'mhj',CURRENT_TIMESTAMP),
 (0,2,2,'mhj',CURRENT_TIMESTAMP),
 (0,3,2,'mhj',CURRENT_TIMESTAMP),

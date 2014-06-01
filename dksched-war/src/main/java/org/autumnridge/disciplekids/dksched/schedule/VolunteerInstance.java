@@ -26,7 +26,7 @@ public class VolunteerInstance {
 
 	@ManyToOne
 	@NotNull
-	private RoomInstance roomInstance;
+	private ScheduledRoom scheduledRoom;
 	
 	@ManyToOne
 	private Volunteer volunteer;
@@ -48,12 +48,12 @@ public class VolunteerInstance {
 		return id;
 	}
 
-	public RoomInstance getRoomInstance() {
-		return roomInstance;
+	public ScheduledRoom getScheduledRoom() {
+		return scheduledRoom;
 	}
 
-	public VolunteerInstance setRoomInstance(RoomInstance roomInstance) {
-		this.roomInstance = roomInstance;
+	public VolunteerInstance setScheduledRoom(ScheduledRoom scheduledRoom) {
+		this.scheduledRoom = scheduledRoom;
 		return this;
 	}
 

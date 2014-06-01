@@ -16,8 +16,8 @@ import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 @Entity
-@Table(name = "RoomInstance", schema = "dbo")
-public class RoomInstance {
+@Table(name = "ScheduledRoom", schema = "dbo")
+public class ScheduledRoom {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,7 +56,7 @@ public class RoomInstance {
 		return room;
 	}
 
-	public RoomInstance setRoom(Room room) {
+	public ScheduledRoom setRoom(Room room) {
 		this.room = room;
 		return this;
 	}
@@ -65,7 +65,7 @@ public class RoomInstance {
 		return scheduledDate;
 	}
 
-	public RoomInstance setScheduledDate(ScheduledDate scheduledDate) {
+	public ScheduledRoom setScheduledDate(ScheduledDate scheduledDate) {
 		this.scheduledDate = scheduledDate;
 		return this;
 	}
