@@ -59,15 +59,9 @@ public class ScheduledDate {
 		return dateScheduled;
 	}
 
-//	public ScheduledDate setDateScheduled(Date dateScheduled) {
-//		System.out.println("SET: " + dateScheduled);
-//		this.dateScheduled = dateScheduled;
-//		return this;
-//	}
-
-	public ScheduledDate setDateScheduled(String dateScheduled) {
-		System.out.println("SETS: " + dateScheduled);
-		this.dateScheduled = Date.valueOf(dateScheduled);
+	public ScheduledDate setDateScheduled(Date dateScheduled) {
+		System.out.println("SET: " + dateScheduled);
+		this.dateScheduled = dateScheduled;
 		return this;
 	}
 

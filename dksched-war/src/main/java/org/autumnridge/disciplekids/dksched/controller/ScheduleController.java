@@ -1,5 +1,6 @@
 package org.autumnridge.disciplekids.dksched.controller;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.autumnridge.disciplekids.dksched.schedule.Recurrance;
@@ -74,10 +75,9 @@ public class ScheduleController {
 
   @PreAuthorize("hasRole('ROLE_ACTIVE')")
   @RequestMapping(value="/scheduled-rooms", method = RequestMethod.GET)
-  public ResponseEntity<List<ScheduledRoom>> queryScheduledRooms(@RequestParam long id){
-	System.out.println("SCHEDULED ROOMS");
-	// TODO: lookup by date...
-    List<ScheduledRoom> scheduledRooms = scheduleDao.listScheduledRooms(null);
+  public ResponseEntity<List<ScheduledRoom>> queryScheduledRooms(@RequestParam Long scheduledDate_id){
+  	ScheduledDate scheduledDate = scheduleDao.idScheduledDate(scheduledDate_id);
+    List<ScheduledRoom> scheduledRooms = scheduleDao.listScheduledRooms(scheduledDate);
     return new ResponseEntity<List<ScheduledRoom>>(scheduledRooms, HttpStatus.OK);
   }	
   
@@ -96,7 +96,7 @@ public class ScheduleController {
   @PreAuthorize("hasRole('ROLE_ACTIVE')")
   @RequestMapping(value="/scheduled-dates", method = RequestMethod.GET)
   public ResponseEntity<List<ScheduledDate>> queryScheduledDates(){
-    List<ScheduledDate> scheduledDates = scheduleDao.listScheduledDates();
+	List<ScheduledDate> scheduledDates = scheduleDao.listScheduledDates();
     return new ResponseEntity<List<ScheduledDate>>(scheduledDates, HttpStatus.OK);
   }	
   

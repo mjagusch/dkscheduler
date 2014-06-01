@@ -38,7 +38,7 @@ dkschedServices.factory('ScheduledDates', ['$resource', function($resource){
 	  'query': {method:'GET', isArray:true},
 	  'get': {method:'GET'},
 	  'save': {method:'POST'},
-	  'update': {method:'POST'},
+	  'update': {method:'PUT'},
 	  'remove': {method:'DELETE'}
   });
   return ScheduledDates;

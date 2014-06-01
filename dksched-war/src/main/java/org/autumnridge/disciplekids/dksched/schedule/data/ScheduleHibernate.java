@@ -1,6 +1,5 @@
 package org.autumnridge.disciplekids.dksched.schedule.data;
 
-import java.sql.Date;
 import java.util.List;
 
 import org.autumnridge.disciplekids.dksched.schedule.Recurrance;
@@ -8,6 +7,7 @@ import org.autumnridge.disciplekids.dksched.schedule.ScheduledDate;
 import org.autumnridge.disciplekids.dksched.schedule.ScheduledRoom;
 import org.autumnridge.disciplekids.dksched.schedule.VolunteerInstance;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +30,9 @@ public class ScheduleHibernate implements ScheduleDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ScheduledRoom> listScheduledRooms(Date date) {
+	public List<ScheduledRoom> listScheduledRooms(ScheduledDate scheduledDate) {
 		return sf.getCurrentSession().createCriteria(ScheduledRoom.class)
+				.add(Restrictions.eq("scheduledDate", scheduledDate))
 				.list();
 	}
 

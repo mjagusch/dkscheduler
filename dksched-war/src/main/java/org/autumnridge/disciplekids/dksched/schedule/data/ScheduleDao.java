@@ -1,6 +1,5 @@
 package org.autumnridge.disciplekids.dksched.schedule.data;
 
-import java.sql.Date;
 import java.util.List;
 
 import org.autumnridge.disciplekids.dksched.schedule.Recurrance;
@@ -24,7 +23,7 @@ public interface ScheduleDao {
 	 * List the available room instances
 	 * @return
 	 */
-	List<ScheduledRoom> listScheduledRooms(Date date);
+	List<ScheduledRoom> listScheduledRooms(ScheduledDate scheduledDate);
 
 	/**
 	 * find a volunteer instance with a given id

@@ -148,7 +148,7 @@ mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, Sc
 
 	$scope.displayScheduledDate = function(scheduledDate) {
 		$scope.scheduledDate = scheduledDate;
-		$scope.scheduledRooms = ScheduledRooms.query();
+		$scope.scheduledRooms = ScheduledRooms.query({scheduledDate_id: scheduledDate.id});
 	};
 	
 	$scope.voidScheduledDate = function() {
@@ -167,8 +167,6 @@ mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, Sc
 		            Notification.send({type:'error', title:'Error updating scheduled date'});
 	            });
 	          } else {
-	        	console.log('xxx');
-	        	console.log('SD:' + JSON.stringify(scheduledDate));
 		        var saved = ScheduledDates.save(scheduledDate,
 		        function() {
 		            Notification.send({type:'success', title:'Scheduled date saved'});
