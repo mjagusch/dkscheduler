@@ -84,7 +84,15 @@ public class ScheduleHibernateTest extends AbstractTransactionalJUnit4SpringCont
 
 	@Test
 	public void testListScheduledRooms() {
-		assertEquals(12, scheduleDao.listScheduledRooms(null).size());
+		List<ScheduledRoom> rooms = scheduleDao.listScheduledRooms(null); 
+		assertEquals(12, rooms.size());
+	}	
+
+	@Test
+	public void testListScheduledRoomsByDate() {
+		ScheduledDate scheduledDate = scheduleDao.idScheduledDate(1L);
+		List<ScheduledRoom> rooms = scheduleDao.listScheduledRooms(scheduledDate); 
+		assertEquals(3, rooms.size());
 	}	
 
 	@Test

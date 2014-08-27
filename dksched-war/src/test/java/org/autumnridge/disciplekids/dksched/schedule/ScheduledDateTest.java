@@ -20,7 +20,7 @@ public class ScheduledDateTest {
 			.setTimeEnd(Time.valueOf("11:11:11"));
 		
 		assertNull(di.getId());
-		assertEquals(new Date(298388482), di.getDateScheduled());
+		assertEquals(Date.valueOf("2014-01-01"), di.getDateScheduled());
 		assertEquals("10:10:10", di.getTimeStart().toString());
 		assertEquals("11:11:11", di.getTimeEnd().toString());
 		assertTrue(di.checkVersion(0));
