@@ -3,6 +3,7 @@ package org.autumnridge.disciplekids.dksched.controller;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class ScheduleControllerTest extends AbstractTransactionalJUnit4SpringCon
 	@Test
 	public void testUpdateScheduledDate() {
 		ScheduledDate r = scheduleDao.idScheduledDate(1L);
-		r.setDateScheduled("2014-01-01")
+		r.setDateScheduled(Date.valueOf("2014-01-01"))
 			.setTimeStart(Time.valueOf("10:10:10"))
 			.setTimeEnd(Time.valueOf("11:11:11"));
 		
@@ -87,7 +88,7 @@ public class ScheduleControllerTest extends AbstractTransactionalJUnit4SpringCon
 	@Test
 	public void testSaveScheduledDate() {
 		ScheduledDate r = new ScheduledDate()
-			.setDateScheduled("2013-12-31")
+			.setDateScheduled(Date.valueOf("2013-12-31"))
 			.setTimeStart(Time.valueOf("08:08:08"))
 			.setTimeEnd(Time.valueOf("09:09:09"));
 		

@@ -3,6 +3,7 @@ package org.autumnridge.disciplekids.dksched.schedule.data;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class ScheduleHibernateTest extends AbstractTransactionalJUnit4SpringCont
 	@Test
 	public void testScheduledDateSave() {
 		ScheduledDate di = new ScheduledDate();
-		di.setDateScheduled("2014-01-01");
+		di.setDateScheduled(Date.valueOf("2014-01-01"));
 		di.setTimeStart(Time.valueOf("10:10:10"));
 		di.setTimeEnd(Time.valueOf("11:11:11"));
 
