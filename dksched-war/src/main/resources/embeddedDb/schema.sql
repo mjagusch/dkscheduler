@@ -53,6 +53,7 @@ CREATE TABLE dbo.ScheduledRoom(
   version integer not null,
   room_id BIGINT not null,
   scheduledDate_id BIGINT not null,
+  volunteerSlots integer not null,
   changeusername varchar(40) null,
   changetime DATETIME null,
   unique(room_id,scheduledDate_id)

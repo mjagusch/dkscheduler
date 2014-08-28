@@ -60,7 +60,6 @@ public class ScheduledDate {
 	}
 
 	public ScheduledDate setDateScheduled(Date dateScheduled) {
-		System.out.println("SET: " + dateScheduled);
 		this.dateScheduled = dateScheduled;
 		return this;
 	}

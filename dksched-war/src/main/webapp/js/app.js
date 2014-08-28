@@ -17,6 +17,7 @@ var dkSched = angular.module('dkSched', [
   'ngRoute',
   'ngResource',
   'ui.bootstrap',
+  'ui.bootstrap.modal',
   'ui.utils',
   'checklist-model']);
 

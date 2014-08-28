@@ -35,6 +35,9 @@ public class ScheduledRoom {
 	@NotNull
 	private ScheduledDate scheduledDate;
 	
+	@NotNull
+	private int volunteerSlots;
+	
 	@SuppressWarnings("unused")
 //	@NotNull
 	private String changeUsername;
@@ -68,5 +71,13 @@ public class ScheduledRoom {
 	public ScheduledRoom setScheduledDate(ScheduledDate scheduledDate) {
 		this.scheduledDate = scheduledDate;
 		return this;
+	}
+
+	public int getVolunteerSlots() {
+		return volunteerSlots;
+	}
+
+	public void setVolunteerSlots(int volunteerSlots) {
+		this.volunteerSlots = volunteerSlots;
 	}
 }

@@ -155,8 +155,14 @@
 <script src='<%=request.getContextPath()%>/js/lib/ui-bootstrap-tpls-0.10.0.min.js'></script>
 <script src='<%=request.getContextPath()%>/js/app.js'></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/main/dksched-services.js"></script>
-<script src='<%=request.getContextPath()%>/js/main/main.js'></script>
-<script src='<%=request.getContextPath()%>/js/main/admin.js'></script>
+<script src='<%=request.getContextPath()%>/js/main/MainController.js'></script>
+<script src='<%=request.getContextPath()%>/js/main/VolunteerController.js'></script>
+<script src='<%=request.getContextPath()%>/js/main/RoomController.js'></script>
+<script src='<%=request.getContextPath()%>/js/main/ScheduleController.js'></script>
+<script src='<%=request.getContextPath()%>/js/main/RecurringScheduleController.js'></script>
+<script src='<%=request.getContextPath()%>/js/main/DateScheduleController.js'></script>
+<script src='<%=request.getContextPath()%>/js/main/RoomScheduleController.js'></script>
+<script src='<%=request.getContextPath()%>/js/main/VolunteerScheduleController.js'></script>
 
 </body>
 </html>

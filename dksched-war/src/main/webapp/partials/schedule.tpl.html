@@ -26,7 +26,7 @@
             </tbody>
           </table> 
           <div class="form-group row">
-            <a id='addRecurrance' class='btn btn-primary' ng-click="addRecurrance()">Add</a>
+            <a id='addRecurrance' class='btn btn-primary' ng-click="addRecurrance()">Add...</a>
             <a id='scheduleRecurring' class='btn' ng-click="scheduleRecurring()">Schedule...</a>
           </div>
         </div>
@@ -98,7 +98,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="scheduledDate in scheduledDates | filter:filterString" ng-click="displayScheduledDate(scheduledDate)">
+              <tr ng-repeat="scheduledDate in scheduledDates | filter:filterString" ng-click="displayScheduledDate(scheduledDate)" ng-class="{selected: selectedDate.id === scheduledDate.id}">
                 <td>{{scheduledDate.dateScheduled}}</td>
                 <td>{{scheduledDate.timeStart}}</td>
                 <td>{{scheduledDate.timeEnd}}</td>
@@ -110,7 +110,7 @@
           </div>
         </div>
       
-        <div class="col-sm-4 ng-hide" ng-show="scheduledDate">
+        <div class="col-sm-4 ng-hide" ng-show="selectedDate">
           <h1>Details</h1>
           <form role="form" name="scheduledDateEditForm" novalidate>
             <div class="form-group row" ng-class="{'has-error': form.dateScheduled.$error.required}">
@@ -118,7 +118,7 @@
                 Date<span class="help-block error" ng-show="scheduledDateEditForm.dateScheduled.$error.required">Required</span>
               </label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" id="dateScheduled" name="dateScheduled" placeholder="Date" ng-model="scheduledDate.dateScheduled" required/>
+                <input type="text" class="form-control" id="dateScheduled" name="dateScheduled" placeholder="Date" ng-model="selectedDate.dateScheduled" required/>
               </div>
             </div>
 
@@ -126,7 +126,7 @@
               <label class="control-label col-sm-4 text-right" for="timeStart">
                 Start Time<span class="help-block error" ng-show="scheduledDateEditForm.timeStart.$error.required">Required</span></label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" id="timeStart" name="timeStart" placeholder="Start Time" ng-model="scheduledDate.timeStart" required/>
+                <input type="text" class="form-control" id="timeStart" name="timeStart" placeholder="Start Time" ng-model="selectedDate.timeStart" required/>
               </div>
             </div>
           
@@ -135,34 +135,93 @@
                 End Time<span class="help-block error" ng-show="scheduledDateEditForm.timeEnd.$error.required">Required</span>
               </label>
               <div class="col-sm-8">
-                <input type="text" class="form-control" id="timeEnd" name="timeEnd" placeholder="End Time" required ng-model="scheduledDate.timeEnd"/>
+                <input type="text" class="form-control" id="timeEnd" name="timeEnd" placeholder="End Time" required ng-model="selectedDate.timeEnd"/>
               </div>
             </div>
           
             <div class="form-group row">
-              <input type="submit" class="btn btn-default col-sm-offset-1 col-sm-2" ng-click="saveScheduledDate(scheduledDate)" value="Save"/>
-              <a class="col-sm-2 btn" ng-click="deleteScheduledDate(scheduledDate)">Delete</a>
+              <input type="submit" class="btn btn-default col-sm-offset-1 col-sm-2" ng-click="saveScheduledDate(selectedDate)" value="Save"/>
+              <a class="col-sm-2 btn" ng-click="deleteScheduledDate(selectedDate)">Delete</a>
               <a class="col-sm-2 btn" ng-click="voidScheduledDate()">Cancel</a>
             </div>
           </form>
         </div>
-        <div class="col-sm-4 ng-hide" ng-show="scheduledDate">
+        <div class="col-sm-4 ng-hide" ng-show="selectedDate">
           <h1>Rooms</h1>
           <table class="table table-hover">
             <thead>
               <tr>
                 <th>Room</th>
+                <th>#Volunteers</th>
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="scheduledRoom in scheduledRooms | filter:filterString" ng-click="selectScheduledRoom(scheduledRoom)">
+              <tr ng-repeat="scheduledRoom in scheduledRooms | filter:filterString" ng-click="selectScheduledRoom(scheduledRoom)" ng-class="{selected: selectedRoom.id === scheduledRoom.id}">
                 <td>{{scheduledRoom.room.name}}</td>
+                <td>{{scheduledRoom.volunteerSlots}}</td>
               </tr>
             </tbody>
-          </table> 
+          </table>
+           
+          <script type="text/ng-template" id="scheduledRoomDialog.html">
+            <div class="modal-header">
+              <h3 class="modal-title" ng-show="room.id">Edit Room</h3>
+              <h3 class="modal-title" ng-show="!room.id">Add Room</h3>
+            </div>
+            <div class="modal-body">
+              <form role="form" name="scheduledRoomEditForm" novalidate>
+                <div class="form-group row">
+                  <label class="control-label text-right col-sm-4">
+                    Date
+                  </label>
+                  <div class="col-sm-8">
+                    <span class="form-control-static">{{room.scheduledDate.dateScheduled}}</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="control-label text-right col-sm-4">
+                    Start Time
+                  </label>
+                  <div class="col-sm-8">
+                    <span class="form-control-static">{{room.scheduledDate.timeStart}}</span>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="control-label text-right col-sm-4">
+                    End Time
+                  </label>
+                  <div class="col-sm-8">
+                    <span class="form-control-static">{{room.scheduledDate.timeEnd}}</span>
+                  </div>
+                </div>
+                <div class="form-group row" ng-class="{'has-error': form.room.$error.required}">
+                  <label class="control-label text-right col-sm-4" for="room">
+                    Room<span class="help-block error" ng-show="scheduledRoomEditForm.room.$error.required">Required</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="room" name="room" placeholder="Room" ng-model="selectedRoom.room.name" required/>
+                  </div>
+                </div>
+                <div class="form-group row" ng-class="{'has-error': form.volunteers.$error.required}">
+                  <label class="control-label text-right col-sm-4" for="volunteers">
+                    #Volunteers<span class="help-block error" ng-show="scheduledRoomEditForm.volunteers.$error.required">Required</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="volunteers" name="volunteers" placeholder="#Volunteers" ng-model="selectedRoom.volunteerSlots" required/>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" ng-click="ok()">OK</button>
+              <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            </div>
+          </script>
           <div class="form-group row">
-            <input type="submit" class="btn btn-default col-sm-offset-1 col-sm-2" ng-click="AddScheduledRoom(scheduledRoom)" value="Add..."/>
-            <a class="col-sm-2 btn ng-hide" ng-click="deleteScheduledRoom(scheduledDate)" ng-show="scheduledRoom">Delete</a>
+            <input type="submit" class="btn btn-default col-sm-offset-1 col-sm-2" ng-click="addScheduledRoom()" value="Add..."/>
+            <a class="btn col-sm-2" ng-click="editScheduledRoom(selectedRoom)" ng-show="selectedRoom">Edit...</a>
+            <a class="col-sm-2 btn" ng-click="deleteScheduledRoom(selectedRoom)" ng-show="selectedRoom">Delete</a>
           </div>
         </div>
       </div>
@@ -200,7 +259,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="scheduledRoom in scheduledRooms | filter:filterString" ng-click="displayScheduledRoom(scheduledRoom)">
+              <tr ng-repeat="scheduledRoom in scheduledRooms | filter:filterString" ng-click="displayScheduledRoom(selectedRoom)">
                 <td>{{scheduledRoom.scheduledDate.dateScheduled}}</td>
                 <td>{{scheduledRoom.scheduledDate.timeStart}}</td>
                 <td>{{scheduledRoom.scheduledDate.timeEnd}}</td>
@@ -208,7 +267,7 @@
             </tbody>
           </table>
         </div>
-        <div class="col-sm-4 ng-hide" ng-show="scheduledRoom"> 
+        <div class="col-sm-4 ng-hide" ng-show="selectedRoom"> 
           <h1>Details</h1>
           <form role="form" name="scheduledRoomEditForm" novalidate>
             <div class="form-group row" ng-class="{'has-error': form.volunteerSlots.$error.required}">
