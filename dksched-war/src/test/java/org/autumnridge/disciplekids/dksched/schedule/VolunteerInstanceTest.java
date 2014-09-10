@@ -14,14 +14,13 @@ public class VolunteerInstanceTest {
 	@Test
 	public void testVolunteerInstance() {
 		VolunteerInstance vi = new VolunteerInstance()
-		.setVolunteer(new Volunteer().setLastname("VOLUNTEER"))
-		.setScheduledRoom(new ScheduledRoom().setRoom(new Room().setName("ROOM")));
+ 			.setVolunteer(new Volunteer().setLastname("VOLUNTEER"))
+ 			.setScheduledRoom(new ScheduledRoom().setRoom(new Room().setName("ROOM")));
 	
-	assertNull(vi.getId());
-	assertEquals("ROOM", vi.getScheduledRoom().getRoom().getName());
-	assertEquals("VOLUNTEER", vi.getVolunteer().getLastname());
-	assertTrue(vi.checkVersion(0));
-	assertFalse(vi.checkVersion(1));		
-		
+		assertNull(vi.getId());
+		assertEquals("ROOM", vi.getScheduledRoom().getRoom().getName());
+		assertEquals("VOLUNTEER", vi.getVolunteer().getLastname());
+		assertTrue(vi.checkVersion(0));
+		assertFalse(vi.checkVersion(1));		
 	}
 }

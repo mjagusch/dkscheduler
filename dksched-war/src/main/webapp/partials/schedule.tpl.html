@@ -142,7 +142,7 @@
             <div class="form-group row">
               <input type="submit" class="btn btn-default col-sm-offset-1 col-sm-2" ng-click="saveScheduledDate(selectedDate)" value="Save"/>
               <a class="col-sm-2 btn" ng-click="deleteScheduledDate(selectedDate)">Delete</a>
-              <a class="col-sm-2 btn" ng-click="voidScheduledDate()">Cancel</a>
+              <a class="col-sm-2 btn" ng-click="voidSelectedDate()">Cancel</a>
             </div>
           </form>
         </div>
@@ -169,7 +169,7 @@
               <h3 class="modal-title" ng-show="!room.id">Add Room</h3>
             </div>
             <div class="modal-body">
-              <form role="form" name="scheduledRoomEditForm" novalidate>
+              <form role="form" name="form.scheduledRoomEditForm" novalidate>
                 <div class="form-group row">
                   <label class="control-label text-right col-sm-4">
                     Date
@@ -199,7 +199,10 @@
                     Room<span class="help-block error" ng-show="scheduledRoomEditForm.room.$error.required">Required</span>
                   </label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" id="room" name="room" placeholder="Room" ng-model="selectedRoom.room.name" required/>
+                    <span class="form-control-static" id="roomdisp" name="roomdisp" ng-show="room.id">{{room.room.name}}</span>
+                    <select class="form-control" id="room" name="room" ng-model="room.room" ng-options="r.name for r in rooms" ng-hide="room.id">
+                      <option value="">---Choose a room---</option>
+                    </select>
                   </div>
                 </div>
                 <div class="form-group row" ng-class="{'has-error': form.volunteers.$error.required}">
@@ -207,14 +210,14 @@
                     #Volunteers<span class="help-block error" ng-show="scheduledRoomEditForm.volunteers.$error.required">Required</span>
                   </label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" id="volunteers" name="volunteers" placeholder="#Volunteers" ng-model="selectedRoom.volunteerSlots" required/>
+                    <input type="text" class="form-control" id="volunteers" name="volunteers" placeholder="#Volunteers" ng-model="room.volunteerSlots" required/>
                   </div>
                 </div>
 
               </form>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-primary" ng-click="ok()">OK</button>
+              <button class="btn btn-primary" ng-click="ok()">Save</button>
               <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
             </div>
           </script>
@@ -280,7 +283,7 @@
             </div>
             <div class="form-group row">
               <input type="submit" class="btn btn-default col-sm-offset-1 col-sm-2" ng-click="savescheduledRoom(scheduledRoom)" value="Save"/>
-              <a class="col-sm-2 btn" ng-click="voidscheduledRoom()">Cancel</a>
+              <a class="col-sm-2 btn" ng-click="voidSelectedRoom()">Cancel</a>
             </div>
           </form>
         </div>

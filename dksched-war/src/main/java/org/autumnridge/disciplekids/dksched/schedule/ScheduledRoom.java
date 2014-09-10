@@ -55,6 +55,10 @@ public class ScheduledRoom {
 		return id;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public Room getRoom() {
 		return room;
 	}
@@ -79,5 +83,11 @@ public class ScheduledRoom {
 
 	public void setVolunteerSlots(int volunteerSlots) {
 		this.volunteerSlots = volunteerSlots;
+	}
+
+	public void merge(ScheduledRoom merged) {
+		this.scheduledDate = merged.getScheduledDate();
+		this.room = merged.getRoom();
+		this.volunteerSlots = merged.volunteerSlots;
 	}
 }

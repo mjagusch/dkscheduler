@@ -1,13 +1,15 @@
-mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, $modal, ScheduledDates, ScheduledRooms, Notification){
+mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, $modal, ScheduledDates, ScheduledRooms, Rooms, Notification){
 
+	$scope.rooms = Rooms.query();
 	$scope.scheduledDates = ScheduledDates.query();
 
 	$scope.displayScheduledDate = function(selectedDate) {
 		$scope.selectedDate = selectedDate;
 		$scope.scheduledRooms = ScheduledRooms.query({scheduledDate_id: selectedDate.id});
+		$scope.voidSelectedRoom();
 	};
 	
-	$scope.voidScheduledDate = function() {
+	$scope.voidSelectedDate = function() {
 		$scope.selectedDate = undefined;
 	};
 	
@@ -48,7 +50,7 @@ mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, $m
 	    if ( $window.confirm('Are you sure you want to delete this scheduled date?') ) {
 	    	ScheduledDates.remove({id:selectedDate.id},
 	    	function() {
-	    		$scope.voidScheduledDate();
+	    		$scope.voidSelectedDate();
 	    		$scope.scheduledDates.splice($scope.scheduledDates.indexOf(selectedDate), 1);
 	    		Notification.send({type:'success', title:'Scheduled date deleted'});
 	    	},
@@ -62,47 +64,80 @@ mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, $m
 		$scope.selectedRoom = selectedRoom;
 	};
 	
+	$scope.voidSelectedRoom = function() {
+		$scope.selectedRoom = undefined;
+	};
+
 	$scope.addScheduledRoom = function() {
-		$log.info('addRoom');
-		$scope.editRoom({});
+		$scope.editRoom({scheduledDate: $scope.selectedDate});
 	};
 		
 	$scope.editScheduledRoom = function(selectedRoom) {
-		$log.info('editRoom');
 		$scope.editRoom(selectedRoom);
 	};
 		
 	$scope.editRoom = function (room, size) {
-		$log.info('popup: ' + JSON.stringify(room));
 		var modalInstance = $modal.open({
 			templateUrl: 'scheduledRoomDialog.html',
 		    controller: RoomEditCtrl,
 		    size: size,
 		    resolve: {
 		        room: function() {
-		        	$log.info('ROOM PROVIDER');
 		        	return room;
-		        }
+		        },
+				rooms: function() {
+					return $scope.rooms;
+				}
 		    }
 		});
 
 		modalInstance.result.then(function (editedRoom) {
-			$log.info('RETURN: ' + JSON.stringify(editedRoom));
-			$scope.editedRoom = editedRoom;
+			$scope.scheduledRooms.push(editedRoom);
 		}, function () {
-			$log.info('Modal dismissed at: ' + new Date());
+			// TODO: do we need to do anything on exit?
 		});
 	};
 
-	var RoomEditCtrl = function ($scope, $modalInstance, room) {
+	var RoomEditCtrl = function ($scope, $modalInstance, ScheduledRooms, room, rooms) {
+		$scope.form = {}; // Work-around
         $scope.room = room;
-
+        $scope.rooms = rooms;
+        
 		$scope.ok = function () {
+			$scope.saveScheduledRoom($scope.room);			
 		    $modalInstance.close($scope.room);
 		};
 
 		$scope.cancel = function () {
 		    $modalInstance.dismiss('cancel');
+		};
+
+		$scope.saveScheduledRoom = function(room) {
+		    if($scope.form.scheduledRoomEditForm.$dirty) {
+		        if($scope.form.scheduledRoomEditForm.$valid) {
+		          if (room.id) {
+		            ScheduledRooms.update(room, 
+		            function(saved) {
+			            _.extend($scope.selectedRoom, saved);
+			            Notification.send({type:'success', title:'Scheduled room updated'});
+		            },
+		            function() {
+			            Notification.send({type:'error', title:'Error updating scheduled room'});
+		            });
+		          } else {
+			        ScheduledRooms.save(room,
+			        function(saved) {
+			            _.extend($scope.selectedRoom, saved);
+			            Notification.send({type:'success', title:'Scheduled room saved'});
+		            },
+		            function() {
+			            Notification.send({type:'error', title:'Error saving scheduled room'});
+		            });
+		          }
+		        }else{
+		          Notification.send({type:'error', title:'Validation Error', text:'Fix the issues for the scheduled date and try again.'});
+		        }
+		    }
 		};
 	};	
 });

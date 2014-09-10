@@ -1,6 +1,5 @@
 package org.autumnridge.disciplekids.dksched.controller;
 
-import java.sql.Date;
 import java.util.List;
 
 import org.autumnridge.disciplekids.dksched.schedule.Recurrance;
@@ -74,26 +73,6 @@ public class ScheduleController {
   }	
 
   @PreAuthorize("hasRole('ROLE_ACTIVE')")
-  @RequestMapping(value="/scheduled-rooms", method = RequestMethod.GET)
-  public ResponseEntity<List<ScheduledRoom>> queryScheduledRooms(@RequestParam Long scheduledDate_id){
-  	ScheduledDate scheduledDate = scheduleDao.idScheduledDate(scheduledDate_id);
-    List<ScheduledRoom> scheduledRooms = scheduleDao.listScheduledRooms(scheduledDate);
-    return new ResponseEntity<List<ScheduledRoom>>(scheduledRooms, HttpStatus.OK);
-  }	
-  
-  @PreAuthorize("hasRole('ROLE_ACTIVE')")
-  @RequestMapping(value="/scheduled-rooms/{scheduledRoomId}", method = RequestMethod.GET)
-  public ResponseEntity<ScheduledRoom> getScheduledRooms(@PathVariable long scheduledRoomId){
-    ScheduledRoom scheduledRoom = null;
-    if ( scheduledRoomId > 0 ) {
-    	scheduledRoom = scheduleDao.idScheduledRoom(scheduledRoomId);
-    } else {
-    	scheduledRoom = new ScheduledRoom();
-    }
-    return new ResponseEntity<ScheduledRoom>(scheduledRoom, HttpStatus.OK);
-  }
-  
-  @PreAuthorize("hasRole('ROLE_ACTIVE')")
   @RequestMapping(value="/scheduled-dates", method = RequestMethod.GET)
   public ResponseEntity<List<ScheduledDate>> queryScheduledDates(){
 	List<ScheduledDate> scheduledDates = scheduleDao.listScheduledDates();
@@ -141,6 +120,45 @@ public class ScheduleController {
     scheduleDao.deleteScheduledDate(existing);
     
     return new ResponseEntity(HttpStatus.OK);
+  }	
+
+  @PreAuthorize("hasRole('ROLE_ACTIVE')")
+  @RequestMapping(value="/scheduled-rooms", method = RequestMethod.GET)
+  public ResponseEntity<List<ScheduledRoom>> queryScheduledRooms(@RequestParam Long scheduledDate_id){
+  	ScheduledDate scheduledDate = scheduleDao.idScheduledDate(scheduledDate_id);
+    List<ScheduledRoom> scheduledRooms = scheduleDao.listScheduledRooms(scheduledDate);
+    return new ResponseEntity<List<ScheduledRoom>>(scheduledRooms, HttpStatus.OK);
+  }	
+  
+  @PreAuthorize("hasRole('ROLE_ACTIVE')")
+  @RequestMapping(value="/scheduled-rooms/{scheduledRoomId}", method = RequestMethod.GET)
+  public ResponseEntity<ScheduledRoom> getScheduledRooms(@PathVariable long scheduledRoomId){
+    ScheduledRoom scheduledRoom = null;
+    if ( scheduledRoomId > 0 ) {
+    	scheduledRoom = scheduleDao.idScheduledRoom(scheduledRoomId);
+    } else {
+    	scheduledRoom = new ScheduledRoom();
+    }
+    return new ResponseEntity<ScheduledRoom>(scheduledRoom, HttpStatus.OK);
+  }
+  
+  @PreAuthorize("hasRole('ROLE_ACTIVE')")
+  @RequestMapping(value="/scheduled-rooms", method = RequestMethod.PUT)
+  public ResponseEntity<ScheduledRoom> updateScheduledRoom(@RequestBody ScheduledRoom room){
+	  System.out.println("ROOM: " + room.getId());
+	ScheduledRoom current = scheduleDao.idScheduledRoom(room.getId());
+	current.merge(room);
+    scheduleDao.saveOrUpdateScheduledRoom(current);
+    
+    return new ResponseEntity<ScheduledRoom>(room, HttpStatus.OK);
+  }	
+
+  @PreAuthorize("hasRole('ROLE_ACTIVE')")
+  @RequestMapping(value="/scheduled-rooms", method = RequestMethod.POST)
+  public ResponseEntity<ScheduledRoom> saveScheduledRoom(@RequestBody ScheduledRoom room){
+    scheduleDao.saveOrUpdateScheduledRoom(room);
+    
+    return new ResponseEntity<ScheduledRoom>(room, HttpStatus.OK);
   }	
 
   @Autowired

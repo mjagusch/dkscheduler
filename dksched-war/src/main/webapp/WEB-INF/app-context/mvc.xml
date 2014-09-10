@@ -9,11 +9,12 @@
 
 	<context:annotation-config/>
 	<context:component-scan base-package="org.autumnridge" />
+
+  <bean id='handlerMapping' class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+    <!-- The following property is a work-around for having spring truncate path variables with dots in them -->
+    <!--property name="useDefaultSuffixPattern" value="false"/>-->
     <property name="interceptors">
      <list>
-         <bean class="foundation.springmvc.LookAndFeelHandlerAdapter">
-             <constructor-arg value="#{appPropertyDao.getValueSupplier('THEME_BACKGROUND_COLOR')}"/>
-         </bean>
          <bean class="org.springframework.web.servlet.mvc.WebContentInterceptor">
            <property name="cacheSeconds" value="0"/>
            <property name="useExpiresHeader" value="true"/>
@@ -22,9 +23,8 @@
          </bean>
      </list>
     </property>
-
-	<bean id='handlerMapping' class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
-
+  </bean>
+  
   <mvc:default-servlet-handler />
 
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
