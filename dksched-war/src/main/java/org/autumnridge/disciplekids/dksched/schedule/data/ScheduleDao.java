@@ -39,7 +39,7 @@ public interface ScheduleDao {
 	 * List the available volunteer instances
 	 * @return
 	 */
-	List<VolunteerInstance> listVolunteerInstances();
+	List<VolunteerInstance> listVolunteerInstances(ScheduledRoom scheduledRoom);
 
 	void deleteScheduledRoom(ScheduledRoom scheduledRoom);
 

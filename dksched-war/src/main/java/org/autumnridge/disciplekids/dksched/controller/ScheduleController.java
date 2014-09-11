@@ -5,6 +5,7 @@ import java.util.List;
 import org.autumnridge.disciplekids.dksched.schedule.Recurrance;
 import org.autumnridge.disciplekids.dksched.schedule.ScheduledDate;
 import org.autumnridge.disciplekids.dksched.schedule.ScheduledRoom;
+import org.autumnridge.disciplekids.dksched.schedule.VolunteerInstance;
 import org.autumnridge.disciplekids.dksched.schedule.data.ScheduleDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -117,6 +118,16 @@ public class ScheduleController {
 	if ( existing == null ) {
 		return new ResponseEntity<ScheduledDate>(HttpStatus.NOT_FOUND);
 	}
+    
+    List<ScheduledRoom> rooms = scheduleDao.listScheduledRooms(existing);
+    for ( ScheduledRoom room : rooms ) {
+    	List<VolunteerInstance> volunteers = scheduleDao.listVolunteerInstances(room);
+    	for ( VolunteerInstance volunteer: volunteers ) {
+    		scheduleDao.deleteVolunteerInstance(volunteer);
+    	}
+    	scheduleDao.deleteScheduledRoom(room);    	
+    }
+    
     scheduleDao.deleteScheduledDate(existing);
     
     return new ResponseEntity(HttpStatus.OK);
@@ -158,6 +169,24 @@ public class ScheduleController {
     scheduleDao.saveOrUpdateScheduledRoom(room);
     
     return new ResponseEntity<ScheduledRoom>(room, HttpStatus.OK);
+  }	
+
+  @SuppressWarnings("rawtypes")
+  @PreAuthorize("hasRole('ROLE_ACTIVE')")
+  @RequestMapping(value="/scheduled-rooms", method = RequestMethod.DELETE)
+  public ResponseEntity deleteScheduledRoom(@RequestParam long id){
+	ScheduledRoom existing = scheduleDao.idScheduledRoom(id);
+	if ( existing == null ) {
+		return new ResponseEntity<ScheduledDate>(HttpStatus.NOT_FOUND);
+	}
+	    
+   	List<VolunteerInstance> volunteers = scheduleDao.listVolunteerInstances(existing);
+    	for ( VolunteerInstance volunteer: volunteers ) {
+    		scheduleDao.deleteVolunteerInstance(volunteer);
+    	}
+   	scheduleDao.deleteScheduledRoom(existing);    	
+	    
+   	return new ResponseEntity(HttpStatus.OK);
   }	
 
   @Autowired

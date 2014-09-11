@@ -97,9 +97,15 @@ public class ScheduleHibernateTest extends AbstractTransactionalJUnit4SpringCont
 
 	@Test
 	public void testListVolunteerInstances() {
-		assertEquals(4, scheduleDao.listVolunteerInstances().size());
+		assertEquals(4, scheduleDao.listVolunteerInstances(null).size());
 	}	
 
+	@Test
+	public void testListVolunteerInstancesByRoom() {
+		ScheduledRoom room = scheduleDao.idScheduledRoom(1L);
+		assertEquals(1, scheduleDao.listVolunteerInstances(room).size());
+	}
+	
 	@Test
 	public void testRecurranceSave() {
 		Recurrance rr = new Recurrance();
@@ -136,11 +142,11 @@ public class ScheduleHibernateTest extends AbstractTransactionalJUnit4SpringCont
 	
 	@Test
 	public void testDeleteVolunteerInstance() {
-		List<VolunteerInstance> initial = scheduleDao.listVolunteerInstances();
+		List<VolunteerInstance> initial = scheduleDao.listVolunteerInstances(null);
 		int expectedSize = initial.size() - 1;
 		
 		scheduleDao.deleteVolunteerInstance(initial.get(0));
-		List<VolunteerInstance> updated = scheduleDao.listVolunteerInstances();
+		List<VolunteerInstance> updated = scheduleDao.listVolunteerInstances(null);
 		assertEquals(expectedSize, updated.size());
 	}	
 

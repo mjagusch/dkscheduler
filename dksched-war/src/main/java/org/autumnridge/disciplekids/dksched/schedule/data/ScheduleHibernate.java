@@ -69,9 +69,12 @@ public class ScheduleHibernate implements ScheduleDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<VolunteerInstance> listVolunteerInstances() {
-		return sf.getCurrentSession().createCriteria(VolunteerInstance.class)
-				.list();
+	public List<VolunteerInstance> listVolunteerInstances(ScheduledRoom scheduledRoom) {
+		Criteria crit = sf.getCurrentSession().createCriteria(VolunteerInstance.class);
+		if ( scheduledRoom != null ) {
+			crit.add(Restrictions.eq("scheduledRoom", scheduledRoom));
+		}
+		return crit.list();
 	}
 
 	@Override

@@ -10,7 +10,6 @@ mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, $m
 	};
 	
 	$scope.voidSelectedDate = function() {
-		// TODO: hook this up
 		$scope.selectedDate = undefined;
 	};
 	
@@ -25,8 +24,7 @@ mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, $m
 	};
 	
 	$scope.deleteScheduledDate = function(selectedDate) {
-		// TODO: hook this up
-	    if ( $window.confirm('Are you sure you want to delete this scheduled date?') ) {
+	    if ( $window.confirm('Are you sure you want to delete this scheduled date (all scheduling information for this date will be deleted)?') ) {
 	    	ScheduledDates.remove({id:selectedDate.id},
 	    	function() {
 	    		$scope.voidSelectedDate();
@@ -117,7 +115,6 @@ mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, $m
 	};
 	
 	$scope.voidSelectedRoom = function() {
-		// TODO: hook this up
 		$scope.selectedRoom = undefined;
 	};
 
@@ -131,7 +128,17 @@ mainApp.controller("DateScheduleCtrl", function($scope, $log, $http, $window, $m
 	};
 		
 	$scope.deleteScheduledRoom = function(selectedRoom) {
-		// TODO: hook this up
+	    if ( $window.confirm('Are you sure you want to delete this scheduled room (all scheduled volunteer information for this room will be deleted)?') ) {
+	    	ScheduledRooms.remove({id:selectedRoom.id},
+	    	function() {
+	    		$scope.voidSelectedRoom();
+	    		$scope.scheduledRooms.splice($scope.scheduledRooms.indexOf(selectedRoom), 1);
+	    		Notification.send({type:'success', title:'Scheduled room deleted'});
+	    	},
+	    	function() {
+	    		Notification.send({type:'error', title:'Error deleting scheduled room'});
+	    	});
+	    }
 	};
 	
 	$scope.editRoom = function (room, size) {
