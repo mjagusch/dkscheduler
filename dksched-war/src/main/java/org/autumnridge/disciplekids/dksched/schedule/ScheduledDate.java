@@ -1,6 +1,5 @@
 package org.autumnridge.disciplekids.dksched.schedule;
 
-import java.sql.Date;
 import java.sql.Time;
 
 import javax.persistence.Entity;
@@ -13,6 +12,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 @Entity
 @Table(name = "ScheduledDate", schema = "dbo")
@@ -26,7 +26,8 @@ public class ScheduledDate {
 	private int version = 0;
 
 	@NotNull
-	private Date dateScheduled;
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+	private LocalDate dateScheduled;
 	
 	@NotNull
 	private Time timeStart;
@@ -41,7 +42,7 @@ public class ScheduledDate {
 	@SuppressWarnings("unused")
 //	@NotNull
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	private DateTime changeTime;
+    private DateTime changeTime;
 
 	public boolean checkVersion(int version) {
 		return this.version == version;
@@ -55,11 +56,11 @@ public class ScheduledDate {
 		this.id = id;
 	}
 	
-	public Date getDateScheduled() {
+	public LocalDate getDateScheduled() {
 		return dateScheduled;
 	}
 
-	public ScheduledDate setDateScheduled(Date dateScheduled) {
+	public ScheduledDate setDateScheduled(LocalDate dateScheduled) {
 		this.dateScheduled = dateScheduled;
 		return this;
 	}

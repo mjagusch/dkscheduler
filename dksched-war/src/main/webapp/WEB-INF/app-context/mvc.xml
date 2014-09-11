@@ -40,9 +40,9 @@
 			<list>
 				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
 					<property name="objectMapper">
-  					<bean class="org.codehaus.jackson.map.ObjectMapper" />
+  					<bean class="org.autumnridge.disciplekids.util.ArcObjectMapper" />
 					</property>
-				</bean>
+        </bean>
 				<bean
 					class="org.springframework.http.converter.StringHttpMessageConverter">
 				</bean>

@@ -145,7 +145,6 @@ public class ScheduleController {
   @PreAuthorize("hasRole('ROLE_ACTIVE')")
   @RequestMapping(value="/scheduled-rooms", method = RequestMethod.PUT)
   public ResponseEntity<ScheduledRoom> updateScheduledRoom(@RequestBody ScheduledRoom room){
-	  System.out.println("ROOM: " + room.getId());
 	ScheduledRoom current = scheduleDao.idScheduledRoom(room.getId());
 	current.merge(room);
     scheduleDao.saveOrUpdateScheduledRoom(current);

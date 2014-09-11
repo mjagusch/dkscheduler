@@ -3,7 +3,6 @@ package org.autumnridge.disciplekids.dksched.schedule.data;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import org.autumnridge.disciplekids.dksched.schedule.ScheduledDate;
 import org.autumnridge.disciplekids.dksched.schedule.ScheduledRoom;
 import org.autumnridge.disciplekids.dksched.schedule.VolunteerInstance;
 import org.autumnridge.disciplekids.dksched.volunteer.data.VolunteerDao;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -37,7 +37,7 @@ public class ScheduleHibernateTest extends AbstractTransactionalJUnit4SpringCont
 	@Test
 	public void testScheduledDateSave() {
 		ScheduledDate di = new ScheduledDate();
-		di.setDateScheduled(Date.valueOf("2014-01-01"));
+		di.setDateScheduled(LocalDate.parse("2014-01-01"));
 		di.setTimeStart(Time.valueOf("10:10:10"));
 		di.setTimeEnd(Time.valueOf("11:11:11"));
 
