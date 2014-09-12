@@ -1,45 +1,22 @@
-mainApp.controller("RecurringScheduleCtrl", function($scope, $log, $http, $window, Recurrances, Notification){
+mainApp.controller("RecurringScheduleCtrl", function($scope, $log, $http, $window, $modal, Recurrances, Notification){
 
 	$scope.recurrances = Recurrances.query();
 
 	$scope.displayRecurrance = function(recurrance) {
-		$scope.recurrance = recurrance;
+		$scope.selectedRecurrance = recurrance;
 	};
 	
 	$scope.voidRecurrance = function() {
-		$scope.recurrance = undefined;
+		$scope.selectedRecurrance = undefined;
 	};
 	
-	$scope.saveRecurrance = function(recurrance) {
-	    if($scope.recurranceEditForm.$dirty) {
-	        if($scope.recurranceEditForm.$valid) {
-	          if (recurrance.id) {
-	            Recurrances.update(recurrance, 
-	            function() {
-		            Notification.send({type:'success', title:'Recurrance updated'});
-	            },
-	            function() {
-		            Notification.send({type:'error', title:'Error updating recurrance'});
-	            });
-	          } else {
-		        var saved = Recurrances.save(recurrance,
-		        function() {
-		            Notification.send({type:'success', title:'Recurrance saved'});
-	            },
-	            function() {
-		            Notification.send({type:'error', title:'Error saving recurrance'});
-	            });
-	            _.extend($scope.recurrance, saved);
-	            $scope.recurrances.push($scope.recurrance);
-	          }
-	        }else{
-	          Notification.send({type:'error', title:'Validation Error', text:'Fix the issues for the recurrance and try again.'});
-	        }
-	    }
+	$scope.editRecurrance = function(recurrance) {
+		$scope.editRecurring(recurrance);
 	};
 	
 	$scope.addRecurrance = function() {
-	    $scope.recurrance = {id: undefined, dayOfWeek: undefined, timeStart: undefined, timeEnd: undefined};
+		$scope.selectedRecurrance = undefined;
+		$scope.editRecurrance({});
 	};
 	
 	$scope.deleteRecurrance = function(recurrance) {
@@ -54,6 +31,75 @@ mainApp.controller("RecurringScheduleCtrl", function($scope, $log, $http, $windo
 	    		Notification.send({type:'error', title:'Error deleting recurrance'});
 	    	});
 	    }
+	};
+	
+	$scope.editRecurring = function (recurrance, size) {
+		var modalInstance = $modal.open({
+			templateUrl: 'recurranceDialog.html',
+		    controller: RecurranceEditCtrl,
+		    size: size,
+		    resolve: {
+		        recurrance: function() {
+		        	return recurrance;
+		        },
+				recurrances: function() {
+					return $scope.recurrances;
+				}
+		    }
+		});
+
+		modalInstance.result.then(function (editedRecurrance) {
+			if ( $scope.selectedRecurrance ) {
+				_.extend($scope.selectedRecurrance, editedRecurrance);
+			} else {
+				$scope.selectedRecurrance = editedRecurrance;				
+			}
+		});
+	};
+
+	var RecurranceEditCtrl = function ($scope, $modalInstance, Recurrances, recurrance, recurrances) {
+		$scope.form = {}; // Work-around
+        $scope.recurrance = _.clone(recurrance);
+        $scope.recurrances = recurrances;
+        
+		$scope.ok = function () {
+			$scope.saveRecurrance($scope.recurrance);			
+		};
+
+		$scope.cancel = function () {
+		    $modalInstance.dismiss('cancel');
+		};
+
+		$scope.saveRecurrance = function(recurrance) {
+		    if($scope.form.recurranceEditForm.$dirty) {
+		        if($scope.form.recurranceEditForm.$valid) {
+		          if (recurrance.id) {
+		            Recurrances.update(recurrance, 
+    	              function(saved) {
+		            	_.extend($scope.recurrance, saved);
+			    		Notification.send({type:'success', title:'Recurrance updated'});
+					    $modalInstance.close($scope.recurrance);
+			    	  },
+			    	  function() {
+			    		Notification.send({type:'error', title:'Error updating recurrance'});
+			    	  });
+		          } else {
+			        Recurrances.save(recurrance,
+			          function(saved) {
+			            _.extend($scope.recurrance, saved);
+						$scope.recurrances.push($scope.recurrance);				
+			            Notification.send({type:'success', title:'Recurrance saved'});
+					    $modalInstance.close($scope.recurrance);
+		              },
+		              function() {
+			            Notification.send({type:'error', title:'Error saving recurrance'});
+		            });
+		          }
+		        } else {
+		          Notification.send({type:'error', title:'Validation Error', text:'Fix the issues for the scheduled date and try again.'});
+		        }
+		    }
+		};
 	};
 	
 	$scope.scheduleRecurring = function() {

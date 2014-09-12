@@ -33,9 +33,6 @@ public class Recurrance {
 	@NotNull
 	private Time timeEnd;
 	
-	@NotNull
-	private int volunteerSlots;
-
 	@SuppressWarnings("unused")
 //	@NotNull
 	private String changeUsername;
@@ -84,19 +81,9 @@ public class Recurrance {
 		return this;
 	}
 
-	public int getVolunteerSlots() {
-		return volunteerSlots;
-	}
-
-	public Recurrance setVolunteerSlots(int volunteerSlots) {
-		this.volunteerSlots = volunteerSlots;
-		return this;
-	}
-
 	public void merge(Recurrance merged) {
 		this.dayOfWeek = merged.getDayOfWeek();
 		this.timeStart = merged.getTimeStart();
 		this.timeEnd = merged.getTimeEnd();
-		this.volunteerSlots = merged.volunteerSlots;
 	}
 }

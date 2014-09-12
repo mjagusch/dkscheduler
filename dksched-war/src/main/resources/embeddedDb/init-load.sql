@@ -12,10 +12,10 @@ insert into dbo.Volunteer(version,lastname,firstname,email,changeusername,change
 values(0,'Johnson','Markl','mj@gmail.com','mhj',CURRENT_TIMESTAMP),
 (0,'Johnson','Sue','sj@gmail.com','mhj',CURRENT_TIMESTAMP);
 
-insert into dbo.Recurrance(version, dayOfWeek, timeStart,timeEnd,volunteerSlots,changeusername,changetime)
-values(0,1,'17:15:00','18:45:00',2,'mhj',CURRENT_TIMESTAMP),
-(0,2,'08:45:00','10:15:00',2,'mhj',CURRENT_TIMESTAMP),
-(0,2,'10:15:00','11:45:00',2,'mhj',CURRENT_TIMESTAMP);
+insert into dbo.Recurrance(version, dayOfWeek, timeStart,timeEnd,changeusername,changetime)
+values(0,1,'17:15:00','18:45:00','mhj',CURRENT_TIMESTAMP),
+(0,2,'08:45:00','10:15:00','mhj',CURRENT_TIMESTAMP),
+(0,2,'10:15:00','11:45:00','mhj',CURRENT_TIMESTAMP);
 
 insert into dbo.ScheduledDate(version,dateScheduled,timeStart,timeEnd,changeusername,changetime)
 values(0,'2014-04-19','17:15:00','18:45:00','mhj',CURRENT_TIMESTAMP),

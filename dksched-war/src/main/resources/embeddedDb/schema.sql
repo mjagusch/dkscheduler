@@ -31,7 +31,6 @@ CREATE TABLE dbo.Recurrance(
   dayOfWeek INTEGER not null,
   timeStart TIME not null,
   timeEnd TIME not null,
-  volunteerSlots INTEGER not null,
   changeusername varchar(40) null,
   changetime DATETIME null,
   unique(dayOfWeek,timeStart)

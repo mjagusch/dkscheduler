@@ -135,7 +135,6 @@ public class ScheduleControllerTest extends AbstractTransactionalJUnit4SpringCon
 		assertEquals(1, o1.getBody().getDayOfWeek());
 		assertEquals("17:15:00", o1.getBody().getTimeStart().toString());
 		assertEquals("18:45:00", o1.getBody().getTimeEnd().toString());
-		assertEquals(2, o1.getBody().getVolunteerSlots());
 		assertNull(o2.getBody().getId());
 		assertEquals(0, o2.getBody().getDayOfWeek());
 		assertNull(o2.getBody().getTimeStart());
@@ -151,8 +150,7 @@ public class ScheduleControllerTest extends AbstractTransactionalJUnit4SpringCon
 		Recurrance r = scheduleDao.idRecurrance(1L);
 		r.setDayOfWeek(7)
 			.setTimeStart(Time.valueOf("10:10:10"))
-			.setTimeEnd(Time.valueOf("11:11:11"))
-			.setVolunteerSlots(9);
+			.setTimeEnd(Time.valueOf("11:11:11"));
 		
 		ResponseEntity<Recurrance> original = controller.updateRecurrance(r);
 		Recurrance updated = scheduleDao.idRecurrance(1L);
@@ -162,12 +160,10 @@ public class ScheduleControllerTest extends AbstractTransactionalJUnit4SpringCon
 		assertEquals(7, original.getBody().getDayOfWeek());		
 		assertEquals("10:10:10", original.getBody().getTimeStart().toString());		
 		assertEquals("11:11:11", original.getBody().getTimeEnd().toString());		
-		assertEquals(9, (long) original.getBody().getVolunteerSlots());		
 		assertEquals(1L, (long) updated.getId());		
 		assertEquals(7, updated.getDayOfWeek());		
 		assertEquals("10:10:10", updated.getTimeStart().toString());		
 		assertEquals("11:11:11", updated.getTimeEnd().toString());		
-		assertEquals(9, (long) updated.getVolunteerSlots());		
 	}
 
 	@Test
@@ -175,8 +171,7 @@ public class ScheduleControllerTest extends AbstractTransactionalJUnit4SpringCon
 		Recurrance r = new Recurrance()
 			.setDayOfWeek(5)
 			.setTimeStart(Time.valueOf("05:05:05"))
-			.setTimeEnd(Time.valueOf("06:06:06"))
-			.setVolunteerSlots(4);
+			.setTimeEnd(Time.valueOf("06:06:06"));
 		
 		ResponseEntity<Recurrance> original = controller.saveRecurrance(r);
 		Recurrance updated = scheduleDao.idRecurrance(r.getId());
@@ -185,12 +180,10 @@ public class ScheduleControllerTest extends AbstractTransactionalJUnit4SpringCon
 		assertEquals(5, original.getBody().getDayOfWeek());		
 		assertEquals("05:05:05", original.getBody().getTimeStart().toString());		
 		assertEquals("06:06:06", original.getBody().getTimeEnd().toString());		
-		assertEquals(4, (long) original.getBody().getVolunteerSlots());		
 		assertEquals(4L, (long) updated.getId());		
 		assertEquals(5, updated.getDayOfWeek());		
 		assertEquals("05:05:05", updated.getTimeStart().toString());		
 		assertEquals("06:06:06", updated.getTimeEnd().toString());		
-		assertEquals(4, (long) updated.getVolunteerSlots());		
 	}
 	
 	@Test

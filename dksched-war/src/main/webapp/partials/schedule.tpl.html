@@ -1,9 +1,9 @@
 <div class="container">
   <ul tabset>
-    <li tab heading="Recurring">
+    <li tab heading="Dates">
     <div ng-controller="RecurringScheduleCtrl">
-      <div class="row">
-        <div class="col-sm-6">
+      <!-- div class="row"-->
+        <div class="col-sm-4">
           <div class="col-sm-8">
             <h1>Recurring Schedule</h1>
           </div>
@@ -13,78 +13,65 @@
                 <th>Day</th>
                 <th>Start Time</th>
                 <th>End Time</th>
-                <th>Volunteers</th>
               </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="recurrance in recurrances | filter:filterString" ng-click="displayRecurrance(recurrance)">
+              <tr ng-repeat="recurrance in recurrances | filter:filterString" ng-click="displayRecurrance(recurrance)" ng-class="{selected: selectedRecurrance.id === recurrance.id}">
                 <td>{{recurrance.dayOfWeek}}</td>
                 <td>{{recurrance.timeStart}}</td>
                 <td>{{recurrance.timeEnd}}</td>
-                <td>{{recurrance.volunteerSlots}}</td>
               </tr>
             </tbody>
           </table> 
+          
+          <script type="text/ng-template" id="recurranceDialog.html">
+            <div class="modal-header">
+              <h3 class="modal-title" ng-show="date.id">Edit Recurrance</h3>
+              <h3 class="modal-title" ng-show="!date.id">Add Recurrance</h3>
+            </div>
+            <div class="modal-body">
+              <form role="form" name="form.recurranceEditForm" novalidate>
+                <div class="form-group row" ng-class="{'has-error': form.dayOfWeek.$error.required}">
+                  <label class="control-label col-sm-4 text-right" for="dayOfWeek">
+                    Day<span class="help-block error" ng-show="recurranceEditForm.dayOrWeek.$error.required">Required</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="dayOfWeek" name="dayOfWeek" placeholder="Day of week" ng-model="recurrance.dayOfWeek" required/>
+                  </div>
+                </div>
+                <div class="form-group row" ng-class="{'has-error': form.timeStart.$error.required}">
+                  <label class="control-label col-sm-4 text-right" for="timeStart">
+                    Start Time<span class="help-block error" ng-show="recurranceEditForm.timeStart.$error.required">Required</span></label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="timeStart" name="timeStart" placeholder="Start Time" ng-model="recurrance.timeStart" required/>
+                  </div>
+                </div>      
+                <div class="form-group row" ng-class="{'has-error': form.timeEnd.$error.required}">
+                  <label class="control-label col-sm-4 text-right" for="timeEnd">
+                    End Time<span class="help-block error" ng-show="recurranceEditForm.timeEnd.$error.required">Required</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="timeEnd" name="timeEnd" placeholder="End Time" required ng-model="recurrance.timeEnd"/>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" ng-click="ok()">Save</button>
+              <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+            </div>
+          </script>
+          
           <div class="form-group row">
-            <a id='addRecurrance' class='btn btn-primary' ng-click="addRecurrance()">Add...</a>
-            <a id='scheduleRecurring' class='btn' ng-click="scheduleRecurring()">Schedule...</a>
+            <a class="btn col-sm-3" ng-click="scheduleRecurring()">Schedule...</a>
+            <a class="btn col-sm-2" ng-click="addRecurrance()">Add...</a>
+            <a class="btn col-sm-2" ng-click="editRecurrance(selectedRecurrance)" ng-show="selectedRecurrance">Edit...</a>
+            <a class="btn col-sm-2" ng-click="deleteRecurrance(selectedRecurrance)" ng-show="selectedRecurrance">Delete</a>
+            <a class="btn col-sm-2" ng-click="voidRecurrance()" ng-show="selectedRecurrance">Cancel</a>
           </div>
         </div>
-      
-        <div class="col-sm-6 ng-hide" ng-show="recurrance">
-          <h1>Details</h1>
-          <form role="form" name="recurranceEditForm" novalidate>
-            <div class="form-group row" ng-class="{'has-error': form.dayOfWeek.$error.required}">
-              <label class="control-label col-sm-4 text-right" for="dayOfWeek">
-                Day of Week<span class="help-block error" ng-show="recurranceEditForm.dayOfWeek.$error.required">Required</span>
-              </label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="dayOfWeek" name="dayOfWeek" placeholder="DayOfWeek" ng-model="recurrance.dayOfWeek" required/>
-              </div>
-            </div>
-
-            <div class="form-group row" ng-class="{'has-error': form.timeStart.$error.required}">
-              <label class="control-label col-sm-4 text-right" for="timeStart">
-                Start Time<span class="help-block error" ng-show="recurranceEditForm.timeStart.$error.required">Required</span></label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="timeStart" name="timeStart" placeholder="Start Time" ng-model="recurrance.timeStart" required/>
-              </div>
-            </div>
-          
-            <div class="form-group row" ng-class="{'has-error': form.timeEnd.$error.required}">
-              <label class="control-label col-sm-4 text-right" for="timeEnd">
-                End Time<span class="help-block error" ng-show="recurranceEditForm.timeEnd.$error.required">Required</span>
-              </label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" id="timeEnd" name="timeEnd" placeholder="End Time" required ng-model="recurrance.timeEnd"/>
-              </div>
-            </div>
-          
-            <div class="form-group row" ng-class="{'has-error': form.volunteerSlots.$error.required}">
-              <label class="control-label col-sm-4 text-right" for="volunteerSlots">
-                Volunteers<span class="help-block error" ng-show="recurranceEditForm.volunteerSlots.$error.required">Required</span>
-              </label>
-              <div class="col-sm-8">
-                <input type="number" class="form-control" id="volunteerSlots" name="volunteerSlots" placeholder="# Volunteers" required ng-model="recurrance.volunteerSlots"/>
-              </div>
-            </div>
-          
-            <div class="form-group row">
-              <input type="submit" class="btn btn-default col-sm-offset-1 col-sm-2" ng-click="saveRecurrance(recurrance)" value="Save"/>
-              <a class="col-sm-2 btn" ng-click="deleteRecurrance(recurrance)">Delete</a>
-              <a class="col-sm-2 btn" ng-click="voidRecurrance()">Cancel</a>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="row" ng-show="scheduledDates">
-        <h2> The following dates have been scheduled</h2>
-      </div>      
     </div>
-    </li>
-    <li tab heading="Dates">
     <div ng-controller="DateScheduleCtrl">
-      <div class="row">
         <div class="col-sm-4">
           <div class="col-sm-8">
             <h1>Scheduled Dates</h1>
@@ -145,10 +132,10 @@
           </script>
           
           <div class="form-group row">
-            <input type="submit" class="btn btn-default col-sm-offset-1 col-sm-2" ng-click="addScheduledDate()" value="Add..."/>
+            <a class="btn col-sm-2" ng-click="addScheduledDate()">Add...</a>
             <a class="btn col-sm-2" ng-click="editScheduledDate(selectedDate)" ng-show="selectedDate">Edit...</a>
-            <a class="col-sm-2 btn" ng-click="deleteScheduledDate(selectedDate)" ng-show="selectedDate">Delete</a>
-            <a class="col-sm-2 btn" ng-click="voidSelectedDate()" ng-show="selectedDate">Cancel</a>
+            <a class="btn col-sm-2" ng-click="deleteScheduledDate(selectedDate)" ng-show="selectedDate">Delete</a>
+            <a class="btn col-sm-2" ng-click="voidSelectedDate()" ng-show="selectedDate">Cancel</a>
           </div>
         </div>
       
@@ -228,13 +215,12 @@
             </div>
           </script>
           <div class="form-group row">
-            <input type="submit" class="btn btn-default col-sm-offset-1 col-sm-2" ng-click="addScheduledRoom()" value="Add..."/>
+            <a class="btn col-sm-2" ng-click="addScheduledRoom()">Add...</a>
             <a class="btn col-sm-2" ng-click="editScheduledRoom(selectedRoom)" ng-show="selectedRoom">Edit...</a>
-            <a class="col-sm-2 btn" ng-click="deleteScheduledRoom(selectedRoom)" ng-show="selectedRoom">Delete</a>
-            <a class="col-sm-2 btn" ng-click="voidSelectedRoom()" ng-show="selectedRoom">Cancel</a>
+            <a class="btn col-sm-2" ng-click="deleteScheduledRoom(selectedRoom)" ng-show="selectedRoom">Delete</a>
+            <a class="btn col-sm-2" ng-click="voidSelectedRoom()" ng-show="selectedRoom">Cancel</a>
           </div>
         </div>
-      </div>
     </div>
     </li>
     <li tab heading="Rooms">

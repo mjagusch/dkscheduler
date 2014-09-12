@@ -110,7 +110,6 @@ public class ScheduleHibernateTest extends AbstractTransactionalJUnit4SpringCont
 	public void testRecurranceSave() {
 		Recurrance rr = new Recurrance();
 		rr.setDayOfWeek(5);
-		rr.setVolunteerSlots(3);
 		rr.setTimeStart(Time.valueOf("10:10:10"));
 		rr.setTimeEnd(Time.valueOf("11:11:11"));
 
@@ -120,7 +119,6 @@ public class ScheduleHibernateTest extends AbstractTransactionalJUnit4SpringCont
 		
 		assertEquals(rr.getId().longValue(), loaded.getId().longValue());
 		assertEquals(5, loaded.getDayOfWeek());
-		assertEquals(3, loaded.getVolunteerSlots());
 		assertEquals("10:10:10", loaded.getTimeStart().toString());
 		assertEquals("11:11:11", loaded.getTimeEnd().toString());
 	}	
