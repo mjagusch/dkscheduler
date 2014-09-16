@@ -6,6 +6,9 @@ import static org.junit.Assert.assertNull;
 import java.util.List;
 
 import org.autumnridge.disciplekids.dksched.room.Room;
+import org.autumnridge.disciplekids.dksched.schedule.ScheduledRoom;
+import org.autumnridge.disciplekids.dksched.schedule.VolunteerInstance;
+import org.autumnridge.disciplekids.dksched.schedule.data.ScheduleDao;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -20,6 +23,8 @@ public class RoomHibernateTest extends AbstractTransactionalJUnit4SpringContextT
 
     @Autowired
     RoomDao roomDao;
+    
+    @Autowired ScheduleDao scheduleDao;
     
 	@Test
 	public void testRoomSave() {
@@ -52,6 +57,15 @@ public class RoomHibernateTest extends AbstractTransactionalJUnit4SpringContextT
 	public void testDeleteRoom() {
 		List<Room> initial = roomDao.listRooms();
 		int expectedSize = initial.size() - 1;
+		
+		List<ScheduledRoom> scheduledRooms = scheduleDao.listScheduledRooms(null,  initial.get(0));
+		for ( ScheduledRoom sr : scheduledRooms ) {
+			List<VolunteerInstance> volunteers = scheduleDao.listVolunteerInstances(sr, null);
+			for ( VolunteerInstance v : volunteers ) {
+				scheduleDao.deleteVolunteerInstance(v);
+			}
+			scheduleDao.deleteScheduledRoom(sr);
+		}
 		
 		roomDao.deleteRoom(initial.get(0));
 		List<Room> updated = roomDao.listRooms();

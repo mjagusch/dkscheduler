@@ -103,8 +103,8 @@ mainApp.controller("RecurringScheduleCtrl", function($scope, $log, $http, $windo
 	};
 	
 	$scope.scheduleRecurring = function() {
-		// TODO:
 		console.log("TODO: $scope.scheduleRecurring");
+		$http({method:"post", url:"schedule-recurring", params:{toDate: "2014-10-01"}});
 	};
 });
 

@@ -55,7 +55,9 @@ CREATE TABLE dbo.ScheduledRoom(
   volunteerSlots integer not null,
   changeusername varchar(40) null,
   changetime DATETIME null,
-  unique(room_id,scheduledDate_id)
+  unique(room_id,scheduledDate_id),
+  CONSTRAINT fk_ScheduledRoomScheduledDate FOREIGN KEY (scheduledDate_id) REFERENCES ScheduledDate(id),
+  CONSTRAINT fk_ScheduledRoomRoom FOREIGN KEY (room_id) REFERENCES Room(id)
 );
 
 CREATE TABLE dbo.VolunteerInstance(
@@ -65,7 +67,9 @@ CREATE TABLE dbo.VolunteerInstance(
   volunteer_id BIGINT null,
   changeusername varchar(40) null,
   changetime DATETIME null,
-  unique(scheduledRoom_id,volunteer_id)
+  unique(scheduledRoom_id,volunteer_id),
+  CONSTRAINT fk_VolunteerInstanceScheduledRoom FOREIGN KEY (scheduledRoom_id) REFERENCES ScheduledRoom(id),
+  CONSTRAINT fk_VolunteerInstanceVolunteer FOREIGN KEY (volunteer_id) REFERENCES Volunteer(id)
 );
 
 CREATE TABLE dbo.Report(

@@ -5,8 +5,11 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
+import org.autumnridge.disciplekids.dksched.schedule.VolunteerInstance;
+import org.autumnridge.disciplekids.dksched.schedule.data.ScheduleDao;
 import org.autumnridge.disciplekids.dksched.volunteer.Volunteer;
 import org.autumnridge.disciplekids.dksched.volunteer.data.VolunteerDao;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,9 @@ public class VolunteerControllerTest extends AbstractTransactionalJUnit4SpringCo
 
     @Autowired
     VolunteerDao dao;
+
+    @Autowired
+    ScheduleDao scheduleDao;
     
 	private VolunteerController controller = new VolunteerController();
 
@@ -110,9 +116,26 @@ public class VolunteerControllerTest extends AbstractTransactionalJUnit4SpringCo
 		assertEquals("x@y.com", updated.getEmail());		
 	}
 	
+	@Test(expected=ConstraintViolationException.class)
+	public void testDeleteWithContraintViolation() {
+		List<Volunteer> initial = controller.query().getBody();
+		
+		controller.deleteVolunteer(initial.get(0).getId());
+		List<Volunteer> updated = controller.query().getBody();
+		
+		assertEquals(initial.size()-1, updated.size());
+		
+		assertEquals(HttpStatus.NOT_FOUND, controller.deleteVolunteer(99).getStatusCode());
+	}
+
 	@Test
 	public void testDelete() {
 		List<Volunteer> initial = controller.query().getBody();
+
+		List<VolunteerInstance> instances = scheduleDao.listVolunteerInstances(null,  initial.get(0));
+		for ( VolunteerInstance v : instances ) {
+			scheduleDao.deleteVolunteerInstance(v);
+		}
 		
 		controller.deleteVolunteer(initial.get(0).getId());
 		List<Volunteer> updated = controller.query().getBody();

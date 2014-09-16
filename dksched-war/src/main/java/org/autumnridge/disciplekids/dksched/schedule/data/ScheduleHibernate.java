@@ -1,14 +1,18 @@
 package org.autumnridge.disciplekids.dksched.schedule.data;
 
+import java.sql.Time;
 import java.util.List;
 
+import org.autumnridge.disciplekids.dksched.room.Room;
 import org.autumnridge.disciplekids.dksched.schedule.Recurrance;
 import org.autumnridge.disciplekids.dksched.schedule.ScheduledDate;
 import org.autumnridge.disciplekids.dksched.schedule.ScheduledRoom;
 import org.autumnridge.disciplekids.dksched.schedule.VolunteerInstance;
+import org.autumnridge.disciplekids.dksched.volunteer.Volunteer;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +27,14 @@ public class ScheduleHibernate implements ScheduleDao {
 	public ScheduledRoom idScheduledRoom(Long id) {
 		return (ScheduledRoom) (id == null ? null : sf.getCurrentSession().get(ScheduledRoom.class, id));
 	}
+	
+	@Override
+	public ScheduledRoom loadScheduledRoom(ScheduledDate scheduledDate, Room room) {
+		Criteria crit = sf.getCurrentSession().createCriteria(ScheduledRoom.class);
+		return (ScheduledRoom) crit.add(Restrictions.eq("scheduledDate", scheduledDate))
+			.add(Restrictions.eq("room", room))
+			.uniqueResult();
+	}
 
 	@Override
 	public void saveOrUpdateScheduledRoom(ScheduledRoom scheduledRoom) {
@@ -31,10 +43,13 @@ public class ScheduleHibernate implements ScheduleDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ScheduledRoom> listScheduledRooms(ScheduledDate scheduledDate) {
+	public List<ScheduledRoom> listScheduledRooms(ScheduledDate scheduledDate, Room room) {
 		Criteria crit = sf.getCurrentSession().createCriteria(ScheduledRoom.class);
 		if ( scheduledDate != null ) {
 			crit.add(Restrictions.eq("scheduledDate", scheduledDate));
+		}
+		if ( room != null ) {
+			crit.add(Restrictions.eq("room", room));
 		}
 		return crit.list();
 	}
@@ -44,6 +59,15 @@ public class ScheduleHibernate implements ScheduleDao {
 		return (ScheduledDate) (id == null ? null : sf.getCurrentSession().get(ScheduledDate.class, id));
 	}
 
+	@Override
+	public ScheduledDate loadScheduledDate(LocalDate date, Time timeStart, Time timeEnd) {
+		Criteria crit = sf.getCurrentSession().createCriteria(ScheduledDate.class);
+		return (ScheduledDate) crit.add(Restrictions.eq("dateScheduled", date))
+			.add(Restrictions.eq("timeStart", timeStart))
+			.add(Restrictions.eq("timeEnd", timeEnd))
+			.uniqueResult();
+	}
+	
 	@Override
 	public void saveOrUpdateScheduledDate(ScheduledDate scheduledDate) {
 		sf.getCurrentSession().saveOrUpdate(scheduledDate);
@@ -69,10 +93,13 @@ public class ScheduleHibernate implements ScheduleDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<VolunteerInstance> listVolunteerInstances(ScheduledRoom scheduledRoom) {
+	public List<VolunteerInstance> listVolunteerInstances(ScheduledRoom scheduledRoom, Volunteer volunteer) {
 		Criteria crit = sf.getCurrentSession().createCriteria(VolunteerInstance.class);
 		if ( scheduledRoom != null ) {
 			crit.add(Restrictions.eq("scheduledRoom", scheduledRoom));
+		}
+		if ( volunteer != null ) {
+			crit.add(Restrictions.eq("volunteer", volunteer));
 		}
 		return crit.list();
 	}

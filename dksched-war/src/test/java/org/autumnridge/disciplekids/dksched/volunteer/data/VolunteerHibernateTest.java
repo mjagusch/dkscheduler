@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
+import org.autumnridge.disciplekids.dksched.schedule.VolunteerInstance;
+import org.autumnridge.disciplekids.dksched.schedule.data.ScheduleDao;
 import org.autumnridge.disciplekids.dksched.volunteer.Volunteer;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,10 @@ public class VolunteerHibernateTest extends AbstractTransactionalJUnit4SpringCon
 
     @Autowired
     VolunteerDao volunteerDao;
-    
-	@Test
+
+    @Autowired ScheduleDao scheduleDao;
+
+    @Test
 	public void testVolunteerSave() {
 		Volunteer v = new Volunteer();
 		v.setEmail("someone@somewhere.com");
@@ -54,6 +58,11 @@ public class VolunteerHibernateTest extends AbstractTransactionalJUnit4SpringCon
 	public void testDeleteVolunteer() {
 		List<Volunteer> initial = volunteerDao.listVolunteers();
 		int expectedSize = initial.size() - 1;
+		
+		List<VolunteerInstance> instances = scheduleDao.listVolunteerInstances(null, initial.get(0));
+		for ( VolunteerInstance v : instances ) {
+			scheduleDao.deleteVolunteerInstance(v);
+		}
 		
 		volunteerDao.deleteVolunteer(initial.get(0));
 		List<Volunteer> updated = volunteerDao.listVolunteers();

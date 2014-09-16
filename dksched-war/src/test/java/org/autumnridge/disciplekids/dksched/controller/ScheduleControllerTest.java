@@ -36,7 +36,8 @@ public class ScheduleControllerTest extends AbstractTransactionalJUnit4SpringCon
 
 	@Before
 	public void setupTests() {
-		controller.setScheduleDao(scheduleDao);		
+		controller.setScheduleDao(scheduleDao);
+		controller.setRoomDao(roomDao);
 	}
 	
 	@Test
@@ -92,13 +93,13 @@ public class ScheduleControllerTest extends AbstractTransactionalJUnit4SpringCon
 			.setTimeStart(Time.valueOf("08:08:08"))
 			.setTimeEnd(Time.valueOf("09:09:09"));
 		
-		ResponseEntity<ScheduledDate> room = controller.saveScheduledDate(r);
-		ScheduledDate updated = scheduleDao.idScheduledDate(r.getId());
+		ResponseEntity<ScheduledDate> date = controller.saveScheduledDate(r);
+		ScheduledDate updated = scheduleDao.idScheduledDate(date.getBody().getId());
 		
-		assertEquals(5L, (long) room.getBody().getId());		
-		assertEquals("2013-12-31", room.getBody().getDateScheduled().toString());		
-		assertEquals("08:08:08", room.getBody().getTimeStart().toString());		
-		assertEquals("09:09:09", room.getBody().getTimeEnd().toString());		
+		assertEquals(5L, (long) date.getBody().getId());		
+		assertEquals("2013-12-31", date.getBody().getDateScheduled().toString());		
+		assertEquals("08:08:08", date.getBody().getTimeStart().toString());		
+		assertEquals("09:09:09", date.getBody().getTimeEnd().toString());		
 		assertEquals(5L, (long) updated.getId());		
 		assertEquals("2013-12-31", updated.getDateScheduled().toString());		
 		assertEquals("08:08:08", updated.getTimeStart().toString());		
@@ -132,7 +133,7 @@ public class ScheduleControllerTest extends AbstractTransactionalJUnit4SpringCon
 		assertEquals(HttpStatus.OK, o1.getStatusCode());
 		assertEquals(HttpStatus.OK, o2.getStatusCode());
 		assertEquals(HttpStatus.OK, o3.getStatusCode());
-		assertEquals(1, o1.getBody().getDayOfWeek());
+		assertEquals(6, o1.getBody().getDayOfWeek());
 		assertEquals("17:15:00", o1.getBody().getTimeStart().toString());
 		assertEquals("18:45:00", o1.getBody().getTimeEnd().toString());
 		assertNull(o2.getBody().getId());

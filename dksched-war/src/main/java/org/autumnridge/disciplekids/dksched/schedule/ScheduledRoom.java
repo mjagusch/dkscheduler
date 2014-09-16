@@ -81,8 +81,9 @@ public class ScheduledRoom {
 		return volunteerSlots;
 	}
 
-	public void setVolunteerSlots(int volunteerSlots) {
+	public ScheduledRoom setVolunteerSlots(int volunteerSlots) {
 		this.volunteerSlots = volunteerSlots;
+		return this;
 	}
 
 	public void merge(ScheduledRoom merged) {
