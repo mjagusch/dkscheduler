@@ -102,9 +102,41 @@ mainApp.controller("RecurringScheduleCtrl", function($scope, $log, $http, $windo
 		};
 	};
 	
-	$scope.scheduleRecurring = function() {
-		console.log("TODO: $scope.scheduleRecurring");
-		$http({method:"post", url:"schedule-recurring", params:{toDate: "2014-10-01"}});
+	$scope.scheduleRecurring = function (size) {
+		var modalInstance = $modal.open({
+			templateUrl: 'recurranceScheduleDialog.html',
+		    controller: RecurranceScheduleCtrl,
+		    size: size
+		});
 	};
+
+	var RecurranceScheduleCtrl = function ($scope, $modalInstance, $window) {
+		$scope.form = {}; // Work-around
+        
+		$scope.ok = function () {
+			$scope.scheduleRecurrance();			
+		};
+
+		$scope.cancel = function () {
+		    $modalInstance.dismiss('cancel');
+		};
+
+		$scope.scheduleRecurrance = function() {
+	        if($scope.form.recurranceScheduleForm.$valid) {
+	        	var toDate = moment($scope.form.recurranceScheduleForm.toDate.$modelValue, "MM-DD-YYYY").format("YYYY-MM-DD");
+	        	$http({method:"post", url:"schedule-recurring", params:{toDate: toDate}})
+	        		.success(function() {
+	    		    	Notification.send({type:'info', title:'Recurring dates scheduled'});
+	    		    	$window.location.reload();
+					    $modalInstance.close();	    		    		
+	        		})
+	        		.error(function() {
+	    		    	Notification.send({type:'error', title:'Error scheduling recurring dates'});
+	        		});
+	        } else {
+	            Notification.send({type:'error', title:'Validation Error', text:'Fix the issues for the schedule through date and try again.'});
+	        }
+		};
+	};	
 });
 

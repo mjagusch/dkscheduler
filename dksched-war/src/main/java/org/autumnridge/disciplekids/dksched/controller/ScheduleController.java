@@ -204,11 +204,8 @@ public class ScheduleController {
   @PreAuthorize("hasRole('ROLE_ACTIVE')")
   @RequestMapping(value="/schedule-recurring", method = RequestMethod.POST)
   public ResponseEntity scheduleRecurring(@RequestParam String toDate){
-    System.out.println("schedule-recurring: " + toDate);
 	LocalDate now = new LocalDate();
-    System.out.println("now: " + now);
 	final int dayOfWeek = now.getDayOfWeek();
-    System.out.println("dow: " + dayOfWeek);
 	
 	Comparator<Recurrance> byDOW = new Comparator<Recurrance>() {
 		public int compare ( Recurrance left, Recurrance right ) {
@@ -219,33 +216,21 @@ public class ScheduleController {
 	};
 	
 	List<Recurrance> recurrances = scheduleDao.listRecurrances();
-	System.out.println("recurrances: " + recurrances.size());
 	Collections.sort(recurrances, byDOW); 
-	System.out.println("recurrances: " + recurrances.size());
 		
-	System.out.println("while before");
 	LocalDate processing = now;
 	while ( processing.isBefore(LocalDate.parse(toDate)) ) {
-		System.out.println("    Processing week: " + processing);
 		for ( Recurrance r : recurrances ) {
-			System.out.println("        Processing recurrance: " + r.getDayOfWeek() + "::" + r.getTimeStart());
-			// Get list of schedules for this date and time
-			// Create any necessary schedules
-
 			Integer relDOW = (r.getDayOfWeek() - dayOfWeek + (r.getDayOfWeek() - dayOfWeek < 0 ? 7 : 0));
-			System.out.println("        Processing recurrance for relative DOW: " + relDOW);
 			LocalDate processingDayOfWeek = processing.plusDays(relDOW);
-			System.out.println("        Processing recurrance for date: " + processingDayOfWeek);
 
 			scheduleDate(processingDayOfWeek, r.getTimeStart(), r.getTimeEnd(), true);
 		}
 		
 		// Move one week at a time
 		processing = processing.plusDays(7);
-		System.out.println("    Moving to the next week: " + processing);
 	}
 	
-	System.out.println("return");
     return new ResponseEntity(HttpStatus.OK);
   }	
   
@@ -257,7 +242,6 @@ public class ScheduleController {
 			.setTimeStart(start)
 			.setTimeEnd(end);
 		scheduleDao.saveOrUpdateScheduledDate(scheduledDate);
-		System.out.println("        Created scheduled date: " + scheduledDate.getDateScheduled() + "::" + scheduledDate.getTimeStart());
 
 		if ( scheduleRooms ) {
 			List<Room> rooms = roomDao.listRooms();
@@ -278,7 +262,6 @@ public class ScheduleController {
 			.setRoom(room)
 			.setVolunteerSlots(room.getDefaultVolunteerSlots());
 		scheduleDao.saveOrUpdateScheduledRoom(scheduledRoom);
-		System.out.println("            Created scheduled room: " + room.getName());
 
 		if ( scheduleVolunteers ) {
 			scheduleVolunteers(scheduledRoom);
@@ -297,13 +280,11 @@ public class ScheduleController {
 		VolunteerInstance volunteerInstance = new VolunteerInstance()
 			.setScheduledRoom(room);
 		scheduleDao.saveOrUpdateVolunteerInstance(volunteerInstance);
-		System.out.println("                Created volunteer instance..."+(i+1));
 	}
 	
 	while ( volunteers.size() > room.getVolunteerSlots() ) {
 		VolunteerInstance removed = volunteers.remove(volunteers.size()-1);
 		scheduleDao.deleteVolunteerInstance(removed);
-		System.out.println("                removed volunteer instance..."+(volunteers.size()));		
 	}
 	
 	
